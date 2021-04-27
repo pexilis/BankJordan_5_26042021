@@ -13,6 +13,7 @@ const Cart = (() => {
     self.listArticles = async() => {
         errorInit(cartName);
         let result = CartModel.getArray();
+        result.map(article => errorFormat(article));
         return Promise.resolve(result);
     }
 
