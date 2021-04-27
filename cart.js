@@ -103,6 +103,9 @@ const Cart = (() => {
         }
     }
 
+    self.calculateQuantities = () => {
+        errorInit();
+    }
     return self;
 })();
 
