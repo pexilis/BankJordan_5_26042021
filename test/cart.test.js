@@ -357,6 +357,55 @@ describe("Calculate total quantity", () => {
         
         expect(quantities).toBe(76);
     })
+
+    it("should throw error if only one of the items is invalid", () => {
+        let arrItem = [
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b061", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b062", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b063", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b064", 
+                quantity:"100",
+                price:"45",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            }
+        ];
+
+        let errorThrown;
+
+        localStorage.setItem("cart-storage", JSON.stringify(arrItem));
+
+        try{
+            let total = Cart.calculateQuantities();
+        }catch(e){
+            errorThrown = e;
+        }
+
+        expect(errorThrown).toEqual({error:"FORMAT_ERROR"});
+    });
 });
 
 
