@@ -41,7 +41,7 @@ const Cart = (() => {
         return old_quantity + new_quantity;
     }
 
-    self.clearCart = () => {
+    self.clearCart = _ => {
         errorInit();
         errorEmpty();
         CartModel.clearArray();
@@ -66,7 +66,7 @@ const Cart = (() => {
         CartModel.setById(article.id, article);
     }
 
-    self.addArticle = (article) => {
+    self.addArticle = article => {
         errorInit();
         errorFormat(article);
 
@@ -79,7 +79,7 @@ const Cart = (() => {
         }
     }
 
-    self.calculateQuantities = () => {
+    self.calculateQuantities = _ => {
         errorInit();
         const arrArticle = CartModel.getArray();
         const quantities = [];
@@ -92,6 +92,12 @@ const Cart = (() => {
 
         return quantities.reduce((old, curr) => old + curr);
     }
+
+    self.calculateTotalPrices = _ => {
+        errorInit();
+    }
+
+    
 
     return self;
 })();
