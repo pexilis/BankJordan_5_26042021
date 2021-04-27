@@ -11,6 +11,47 @@ describe("See all articles", () => {
         localStorage.setItem("cart-storage", "[]");
         return Cart.listArticles().then(data => expect(typeof data === "object").toBe(true));
     });
+
+    it("should return an error if only one of the items is invalid", () => {
+        expect.assertions(1);
+        let arrItem = [
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b061", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b062", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b063", 
+                quantity:"100",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b064", 
+                quantity:"100",
+                price:"45",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            }
+        ];
+
+        localStorage.setItem("cart-storage", JSON.stringify(arrItem));
+        return Cart.listArticles().catch(e => expect(e).toEqual({error:"FORMAT_ERROR"}));
+    });
 });
 
 describe("Empty the cart", () => {
@@ -267,6 +308,7 @@ describe("Calculate total quantity", () => {
         let errorThrown; 
 
         try{
+            localStorage.removeItem("cart-storage");
             let total = Cart.calculateQuantities();
         }catch(e){
             errorThrown = e;
@@ -311,8 +353,10 @@ describe("Calculate total quantity", () => {
         Cart.addArticle(thirdArticle);
         Cart.addArticle(thirdArticle);
 
-        const quantites = Cart.calculateQuantities();
-
+        const quantities = Cart.calculateQuantities();
+        
         expect(quantities).toBe(76);
     })
 });
+
+
