@@ -1,15 +1,34 @@
-# Orinoco #
+# Orinoco DevLog 
 
-This is the back end server for Project 5 of the Junior Web Developer path.
+This is the devlog of the Orinoco project, you will find here the progress of the project concerning the addition of new features and refactoring
 
-### Prerequisites ###
+Please refer to other devlogs by choosing the appropriate tag
+## Table of contents
 
-You will need to have Node and `npm` installed locally on your machine.
+- [Overview](#overview)
+  - [TDD](#tdd)
+  - [Features](#features)
 
-### Installation ###
 
-Clone this repo. From within the project folder, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+## Overview
+
+Although it was not part of the bootcamp, I decided to  develop this project in TDD to practice. 
+
+## TDD 
+
+Today I made several tdd cycles for the cart functionality. I have written most of the features, I still have a few to finish.
+
+## Features 
+
+Here is a list of all the features to write 
+
+- Add Article to Cart : ⚙️
+- Remove Article From Cart : ⚙️
+- Calculate Total Quantity : ⚙️
+- Calculate Total Price : ⚙️
+- List Every Articles : ⚙️
+- Empty cart : ⚙️
+ 
+
+
+
