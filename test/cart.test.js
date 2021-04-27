@@ -408,4 +408,17 @@ describe("Calculate total quantity", () => {
     });
 });
 
+describe("Calculate total price", () => {
+    it("should throw an error if the cart isn't initialized", () => {
+        let errorThrown; 
 
+        try{
+            localStorage.removeItem("cart-storage");
+            let total = Cart.calculateTotalPrices();
+        }catch(e){
+            errorThrown = e;
+        }
+
+        expect(errorThrown).toEqual({error:"INITIALIZATION_ERROR"});
+    });
+});
