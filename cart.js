@@ -95,9 +95,14 @@ const Cart = (() => {
 
     self.calculateTotalPrices = _ => {
         errorInit();
+        const arrArticle = CartModel.getArray();
+        
+        arrArticle.map(article => {
+            errorFormat(article);
+        });
     }
 
-    
+
 
     return self;
 })();
