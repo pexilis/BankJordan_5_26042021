@@ -56,6 +56,7 @@ const Cart = (() => {
                            .toString();
 
         article.quantity = new_quantity;
+        updatePaidPrice(article);
 
         try{
             errorFormat(article);
@@ -66,15 +67,23 @@ const Cart = (() => {
         CartModel.setById(article.id, article);
     }
 
+    const updatePaidPrice = article => {
+        const quantity = Number.parseInt(article.quantity, 10);
+        const price = Number.parseInt(article.price.split("0")[0]);
+        const updated_price = quantity * price;
+        article.calculatePrice = updated_price.toString();
+    }
+
     self.addArticle = article => {
         errorInit();
         errorFormat(article);
 
         const old = CartModel.getById(article.id);
-
+        
         if (old){
             updateArticleWithNewQuantity(old, article);
         }else{
+            updatePaidPrice(article);
             CartModel.addItem(article);
         }
     }
@@ -101,8 +110,6 @@ const Cart = (() => {
             errorFormat(article);
         });
     }
-
-
 
     return self;
 })();
