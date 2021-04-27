@@ -301,6 +301,76 @@ describe("Add article to cart", () => {
         
         expect(thrownError).toEqual({error:"ADD_ERROR"});
     });
+
+    it("should update the price when everything is ok", () => {
+        let firstArticle = {
+            name:"foo",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b061", 
+            quantity:"10",
+            price:"455500",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        let secondArticle = {
+            name:"bar",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b062", 
+            quantity:"15",
+            price:"35200",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        let thirdArticle = {
+            name:"ber",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b063", 
+            quantity:"13",
+            price:"65600",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        let result = [
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b061", 
+                quantity:"20",
+                price:"455500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg",
+                calculatePrice:"91100"
+            },
+            {
+                name:"bar",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b062", 
+                quantity:"30",
+                price:"35200",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg",
+                calculatePrice:"10560"
+            },
+            {
+                name:"ber",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b063", 
+                quantity:"26",
+                price:"65600",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg",
+                calculatePrice:"17056"
+            }
+        ];
+
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(firstArticle);
+        Cart.addArticle(firstArticle);
+        Cart.addArticle(secondArticle);
+        Cart.addArticle(secondArticle);
+        Cart.addArticle(thirdArticle);
+        Cart.addArticle(thirdArticle);
+
+        
+        return Cart.listArticles().then(data => expect(data).toEqual(result));
+    });
 });
 
 describe("Calculate total quantity", () => {
@@ -317,46 +387,7 @@ describe("Calculate total quantity", () => {
         expect(errorThrown).toEqual({error:"INITIALIZATION_ERROR"});
     });
 
-    it("should returns the sum of all items when everything is ok", () => {
-        let firstArticle = {
-            name:"foo",
-            description:"my description",
-            id:"5be1ed3f1c9d44000030b061", 
-            quantity:"10",
-            price:"455500",
-            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
-        };
-
-        let secondArticle = {
-            name:"bar",
-            description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
-            quantity:"15",
-            price:"455500",
-            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
-        };
-
-        let thirdArticle = {
-            name:"ber",
-            description:"my description",
-            id:"5be1ed3f1c9d44000030b063", 
-            quantity:"13",
-            price:"455500",
-            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
-        };
-
-        localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(firstArticle);
-        Cart.addArticle(firstArticle);
-        Cart.addArticle(secondArticle);
-        Cart.addArticle(secondArticle);
-        Cart.addArticle(thirdArticle);
-        Cart.addArticle(thirdArticle);
-
-        const quantities = Cart.calculateQuantities();
-        
-        expect(quantities).toBe(76);
-    })
+    
 
     it("should throw error if only one of the items is invalid", () => {
         let arrItem = [
