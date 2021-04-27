@@ -274,4 +274,45 @@ describe("Calculate total quantity", () => {
 
         expect(errorThrown).toEqual({error:"INITIALIZATION_ERROR"});
     });
+
+    it("should returns the sum of all items when everything is ok", () => {
+        let firstArticle = {
+            name:"foo",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b061", 
+            quantity:"10",
+            price:"455500",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        let secondArticle = {
+            name:"bar",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b062", 
+            quantity:"15",
+            price:"455500",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        let thirdArticle = {
+            name:"ber",
+            description:"my description",
+            id:"5be1ed3f1c9d44000030b063", 
+            quantity:"13",
+            price:"455500",
+            imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+        };
+
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(firstArticle);
+        Cart.addArticle(firstArticle);
+        Cart.addArticle(secondArticle);
+        Cart.addArticle(secondArticle);
+        Cart.addArticle(thirdArticle);
+        Cart.addArticle(thirdArticle);
+
+        const quantites = Cart.calculateQuantities();
+
+        expect(quantities).toBe(76);
+    })
 });
