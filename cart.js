@@ -1,58 +1,28 @@
-const LocalStorageAPI = (() => {
-    let self = {};
-
-    self.getArray = name => JSON.parse(localStorage.getItem(name));
-    self.isInitialized = name => localStorage.getItem(name) !== null;
-    self.clearArray = item => localStorage.setItem(item, "[]");
-    
-    self.getById = (name, id) => {
-        const arrArticle = self.getArray(name);
-        const item = arrArticle.find(article => article.id === id);
-        return item;
-    };
-
-    self.addItem = (name, item) => {
-        const arrArticle = self.getArray(name);
-        arrArticle.push(item);
-        localStorage.setItem(name, JSON.stringify(arrArticle));
-    }
-
-    self.setById = (name, id, newItem) => {
-        let arrArticle = self.getArray(name);
-        
-        for (let i = 0 ; i < arrArticle.length ; i++) {
-            const currentArticle = arrArticle[i];
-            if (currentArticle.id === id){
-                arrArticle[i] = newItem;
-            }
-        }
-
-        localStorage.setItem(name, JSON.stringify(arrArticle));
-    }
-
-    return self;
-})();
-
+import LocalStorageModel from "./localStorageModel";
 
 const Cart = (() => {
     let self = {};
 
     const cartName = "cart-storage";
+    let CartModel = null;
+
+    self.init = newAPI => {
+        CartModel = newAPI;
+    }
 
     self.listArticles = async() => {
         errorInit(cartName);
-
-        let result = LocalStorageAPI.getArray(cartName);
+        let result = CartModel.getArray();
         return Promise.resolve(result);
     }
 
-    const errorInit = name => {
-        const isInit =  !LocalStorageAPI.isInitialized(name);
+    const errorInit = _ => {
+        const isInit =  !CartModel.isInitialized();
         if (isInit) throw {error:"INITIALIZATION_ERROR"};
     }
 
-    const errorEmpty = name => {
-        const isEmpty = LocalStorageAPI.getArray(name).length === 0;
+    const errorEmpty = _ => {
+        const isEmpty = CartModel.isEmpty();
         if (isEmpty) throw {error:"EMPTY_ERROR"};
     }
 
@@ -71,12 +41,12 @@ const Cart = (() => {
     }
 
     self.clearCart = () => {
-        errorInit(cartName);
-        errorEmpty(cartName);
-        LocalStorageAPI.clearArray(cartName);
+        errorInit();
+        errorEmpty();
+        CartModel.clearArray();
     }
 
-    const updateArticleWithNewQuantity = (old,article) => {
+    const updateArticleWithNewQuantity = (old, article) => {
         const new_quantity = calculateQuantity
                             (
                                 Number.parseInt(old.quantity), 
@@ -92,35 +62,40 @@ const Cart = (() => {
             throw {error:"ADD_ERROR"};
         }
 
-        LocalStorageAPI.setById(cartName, article.id, article);
+        CartModel.setById(article.id, article);
     }
 
     self.addArticle = (article) => {
-        errorInit(cartName);
+        errorInit();
         errorFormat(article);
 
-        const old = LocalStorageAPI.getById(cartName, article.id);
+        const old = CartModel.getById(article.id);
 
         if (old){
             updateArticleWithNewQuantity(old, article);
         }else{
-            LocalStorageAPI.addItem(cartName, article);
+            CartModel.addItem(article);
         }
     }
 
     self.calculateQuantities = () => {
-        errorInit(cartName);
-        const arrArticle = LocalStorageAPI.getArray(cartName);
+        errorInit();
+        const arrArticle = CartModel.getArray();
         const quantities = [];
 
         arrArticle.map(article => {
-            const quantity = Number.parseInt(article.quantity, 10);
+            const quantity = Number.parseInt(article.quantity);
             quantities.push(quantity);
         });
 
         return quantities.reduce((old, curr) => old + curr);
     }
+
     return self;
+})();
+
+(() => {
+    Cart.init(new LocalStorageModel("cart-storage"));
 })();
 
 export default Cart;
