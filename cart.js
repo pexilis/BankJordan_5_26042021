@@ -20,8 +20,13 @@ const LocalStorageAPI = (() => {
     self.setById = (name, id, newItem) => {
         let arrArticle = self.getArray(name);
         
-        arrArticle = arrArticle.filter(item => item.id === id)
-                               .map(modify => modify = newItem);
+        for (let i = 0 ; i < arrArticle.length ; i++) {
+            const currentArticle = arrArticle[i];
+            if (currentArticle.id === id){
+                arrArticle[i] = newItem;
+            }
+        }
+
         localStorage.setItem(name, JSON.stringify(arrArticle));
     }
 
@@ -104,7 +109,16 @@ const Cart = (() => {
     }
 
     self.calculateQuantities = () => {
-        errorInit();
+        errorInit(cartName);
+        const arrArticle = LocalStorageAPI.getArray(cartName);
+        const quantities = [];
+
+        arrArticle.map(article => {
+            const quantity = Number.parseInt(article.quantity, 10);
+            quantities.push(quantity);
+        });
+
+        return quantities.reduce((old, curr) => old + curr);
     }
     return self;
 })();
