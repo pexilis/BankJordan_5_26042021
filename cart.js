@@ -85,6 +85,7 @@ const Cart = (() => {
         const quantities = [];
 
         arrArticle.map(article => {
+            errorFormat(article);
             const quantity = Number.parseInt(article.quantity);
             quantities.push(quantity);
         });
