@@ -387,15 +387,14 @@ describe("Calculate total quantity", () => {
         expect(errorThrown).toEqual({error:"INITIALIZATION_ERROR"});
     });
 
-    
-
     it("should throw error if only one of the items is invalid", () => {
+        let errorThrown;
         let arrItem = [
             {
                 name:"foo",
                 description:"my description",
                 id:"5be1ed3f1c9d44000030b061", 
-                quantity:"100",
+                quantity:"54",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
             },
@@ -403,7 +402,7 @@ describe("Calculate total quantity", () => {
                 name:"foo",
                 description:"my description",
                 id:"5be1ed3f1c9d44000030b062", 
-                quantity:"100",
+                quantity:"540",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
             },
@@ -411,7 +410,7 @@ describe("Calculate total quantity", () => {
                 name:"foo",
                 description:"my description",
                 id:"5be1ed3f1c9d44000030b063", 
-                quantity:"100",
+                quantity:"54",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
             },
@@ -419,23 +418,61 @@ describe("Calculate total quantity", () => {
                 name:"foo",
                 description:"my description",
                 id:"5be1ed3f1c9d44000030b064", 
-                quantity:"100",
-                price:"45",
+                quantity:"54",
+                price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
             }
         ];
 
-        let errorThrown;
-
-        localStorage.setItem("cart-storage", JSON.stringify(arrItem));
-
         try{
+            localStorage.setItem("cart-storage", JSON.stringify(arrItem));
             let total = Cart.calculateQuantities();
         }catch(e){
             errorThrown = e;
         }
 
         expect(errorThrown).toEqual({error:"FORMAT_ERROR"});
+    });
+
+    it("should return total quantity when everything is ok", () => {
+        let arrItem = [
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b061", 
+                quantity:"54",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b062", 
+                quantity:"54",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b063", 
+                quantity:"54",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            },
+            {
+                name:"foo",
+                description:"my description",
+                id:"5be1ed3f1c9d44000030b064", 
+                quantity:"54",
+                price:"4500",
+                imageUrl:"http://localhost:3000/images/vcam_1.jpg"
+            }
+        ];
+
+        localStorage.setItem("cart-storage", JSON.stringify(arrItem));
+        const totalPrice = Cart.calculateQuantities();
+        expect(totalPrice).toBe(216);
     });
 });
 
