@@ -261,3 +261,17 @@ describe("Add article to cart", () => {
         expect(thrownError).toEqual({error:"ADD_ERROR"});
     });
 });
+
+describe("Calculate total quantity", () => {
+    it("should throw an error if the cart isn't initialized", () => {
+        let errorThrown; 
+
+        try{
+            let total = Cart.calculateQuantities();
+        }catch(e){
+            errorThrown = e;
+        }
+
+        expect(errorThrown).toEqual({error:"INITIALIZATION_ERROR"});
+    });
+});
