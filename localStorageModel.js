@@ -3,25 +3,46 @@ class localStorageModel {
         this.name = name;
     }
 
-    getArray() {
-        return JSON.parse(localStorage.getItem(this.name));
+    errorInit() {
+        const isInit =  !this.isInitialized();
+        if (isInit) throw {error:"INITIALIZATION_ERROR"};
+    }
+
+    errorEmpty() {
+        this.errorInit();
+        const isEmpty = this.isEmpty();
+        if (isEmpty) throw {error:"EMPTY_ERROR"};
+    }
+
+    errorAccess(id) {
+        const notExist = (this.getById(id) === undefined);
+        if (notExist) throw {error:"ACCESS_ERROR"};
     }
 
     isInitialized() {
         return localStorage.getItem(this.name) !== null;
     }
 
+    getArray() {
+        this.errorInit();
+        return JSON.parse(localStorage.getItem(this.name));
+    }
+
     isEmpty() {
+        this.errorInit();
         return JSON.parse(localStorage.getItem(this.name)).length === 0;
     }
 
     clearArray() {
+        this.errorInit();
+        this.errorEmpty();
         localStorage.setItem(this.name, "[]");
     }
 
     getById(id) {
-        const arrArticle = this.getArray(this.name);
-        const item = arrArticle.find(article => article.id === id);
+        this.errorInit();
+        const arrItem = this.getArray(this.name);
+        const item = arrItem.find(item => item.id === id);
         return item;
     }
 
@@ -32,6 +53,7 @@ class localStorageModel {
     }
 
     setById(id, newItem) {
+        this.errorInit();
         let arrArticle = this.getArray(name);
         
         for (let i = 0 ; i < arrArticle.length ; i++) {
@@ -42,6 +64,16 @@ class localStorageModel {
         }
 
         localStorage.setItem(this.name, JSON.stringify(arrArticle));
+    }
+
+    removeItem(id) {
+        this.errorInit();
+        this.errorEmpty();
+        this.errorAccess(id);
+
+        let array = this.getArray();
+        array = array.filter(item => item.id !== id);
+        localStorage.setItem(this.name, JSON.stringify(array));
     }
 }
 
