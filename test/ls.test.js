@@ -161,3 +161,19 @@ describe("Add article from cart", () => {
         ]);
     });
 });
+
+describe("Clear LocalStorage", () => {
+    it("should replace localStorage by empty array", () => {
+        localStorage.setItem("test", "[]");
+        let model = new localStorageModel("test");
+
+        model.addItem({name:"toto", id:"1234"});
+        model.addItem({name:"tutu", id:"1236"});
+
+        model.clearArray();
+
+        const array = model.getArray();
+
+        expect(array).toEqual([]);
+    });
+})

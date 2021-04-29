@@ -325,6 +325,11 @@ describe("Calculate total quantity", () => {
         const totalPrice = Cart.calculateQuantities();
         expect(totalPrice).toBe(181);
     });
+
+    it("should return 0 for empty cart", () => {
+        localStorage.setItem("cart-storage", "[]");
+        expect(Cart.calculateQuantities()).toEqual(0);
+    });
 });
 
 describe("Calculate total price", () => {

@@ -18,11 +18,6 @@ const Cart = (() => {
         return Promise.resolve(result);
     }
 
-    const errorEmpty = _ => {
-        const isEmpty = CartModel.isEmpty();
-        if (isEmpty) throw {error:"EMPTY_ERROR"};
-    }
-
     const errorFormat = article => {
         const objCheck = Validator.checkRegex({
             "uuid":article.id,
@@ -180,7 +175,6 @@ const Cart = (() => {
 
         Cart.clearCart();
         return result;
-
     }
 
     return self;
