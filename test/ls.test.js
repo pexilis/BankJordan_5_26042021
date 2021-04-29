@@ -1,6 +1,4 @@
 import localStorageModel from "../localStorageModel";
-require('jest-fetch-mock').enableMocks();
-
 
 describe("Model Error Handling", () => {
     it("should throw an error initialization (getArray)", () => {
@@ -148,18 +146,6 @@ describe("Remove article from cart", () => {
 });
 
 describe("Add article from cart", () => {
-    it("should throw an error initialization", () => {
-        let error;
-        try{
-            const model = new localStorageModel("test");
-            model.addItem("[]");
-        }catch(e){
-            error = e;
-        }
-
-        expect(error).toEqual({error:"INITIALIZATION_ERROR"});
-    });
-
     it("should add article to cart", () => {
         let article = {
             name:"toto",
