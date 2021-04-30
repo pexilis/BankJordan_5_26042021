@@ -2,7 +2,6 @@ import Global from "./global.config.js";
 import Validator from "../utils/Validator.js";
 
 (() => {
-    console.log(Global.port);
     Validator.addRegex("uuid", "^[0-9a-z]{24}$");
     Validator.addRegex("quantity", "^[0-9]{1,2}$");
     Validator.addRegex("price", "^[0-9]{1,}00$");
