@@ -9,7 +9,7 @@ const generateArticle = _ => {
     return  {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b062", 
+                _id:"5be1ed3f1c9d44000030b062", 
                 quantity:"5",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -20,7 +20,7 @@ const generateArticleWithNegativeQuantity = _ => {
     return  {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b061", 
+                _id:"5be1ed3f1c9d44000030b061", 
                 quantity:"-5",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -39,7 +39,7 @@ const generateArrItem = _ => {
         {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b061", 
+            _id:"5be1ed3f1c9d44000030b061", 
             quantity:"85",
             price:"4500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -47,7 +47,7 @@ const generateArrItem = _ => {
         {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"54",
             price:"4500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -55,7 +55,7 @@ const generateArrItem = _ => {
         {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"22",
             price:"4500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -63,7 +63,7 @@ const generateArrItem = _ => {
         {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"20",
             price:"4500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -76,7 +76,7 @@ const generateDummyForm = _ => {
         firstName:"Jean",
         lastName:"Petit",
         address:"45 rue des tomates",
-      city:"Toronto",
+        city:"Toronto",
         email:"totototo@gmail.com"
     }
 }
@@ -103,7 +103,7 @@ describe("Add article to cart", () => {
         let thrownError;
         try{
             let dummyArticle = generateArticle();
-            dummyArticle.id = "1234";
+            dummyArticle._id = "1234";
             localStorage.setItem("cart-storage", "[]");
             Cart.addArticle(dummyArticle);
         }catch(error){
@@ -192,7 +192,7 @@ describe("Add article to cart", () => {
         Cart.addArticle(dummyArticle);
 
         const arrArticle = JSON.parse(localStorage.getItem("cart-storage"));
-        const article = arrArticle.find(article => article.id === dummyArticle.id);
+        const article = arrArticle.find(article => article._id === dummyArticle._id);
 
         expect(article).toEqual(dummyArticle);
     });
@@ -206,7 +206,7 @@ describe("Add article to cart", () => {
         Cart.addArticle(dummyArticle);
 
         const arrArticle = JSON.parse(localStorage.getItem("cart-storage"));
-        const article = arrArticle.find(article => article.id === dummyArticle.id);
+        const article = arrArticle.find(article => article._id === dummyArticle._id);
 
         expect(article.quantity).toEqual("10");
     });
@@ -232,7 +232,7 @@ describe("Add article to cart", () => {
         let firstArticle = {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b061", 
+            _id:"5be1ed3f1c9d44000030b061", 
             quantity:"10",
             price:"455500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -241,7 +241,7 @@ describe("Add article to cart", () => {
         let secondArticle = {
             name:"bar",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"15",
             price:"35200",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -250,7 +250,7 @@ describe("Add article to cart", () => {
         let thirdArticle = {
             name:"ber",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b063", 
+            _id:"5be1ed3f1c9d44000030b063", 
             quantity:"13",
             price:"65600",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -260,7 +260,7 @@ describe("Add article to cart", () => {
             {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b061", 
+                _id:"5be1ed3f1c9d44000030b061", 
                 quantity:"20",
                 price:"455500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg",
@@ -269,7 +269,7 @@ describe("Add article to cart", () => {
             {
                 name:"bar",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b062", 
+                _id:"5be1ed3f1c9d44000030b062", 
                 quantity:"30",
                 price:"35200",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg",
@@ -278,7 +278,7 @@ describe("Add article to cart", () => {
             {
                 name:"ber",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b063", 
+                _id:"5be1ed3f1c9d44000030b063", 
                 quantity:"26",
                 price:"65600",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg",
@@ -340,7 +340,7 @@ describe("Set article by id", () => {
         Cart.addArticle(article);
         article.price = "5600";
 
-        Cart.setArticleById(article.id, article);
+        Cart.setArticleById(article._id, article);
     });
 
     it("should throw an error on invalid article", () => {
@@ -352,7 +352,7 @@ describe("Set article by id", () => {
         article.price = "56";
 
         try{
-            Cart.setArticleById(article.id, article);
+            Cart.setArticleById(article._id, article);
         }catch(e){
             error = e;
         }
@@ -384,7 +384,7 @@ describe("Get article by id", () => {
         localStorage.setItem("cart-storage", "[]");
         Cart.addArticle(article);
         
-        expect(Cart.getArticleById(article.id)).toEqual(article);
+        expect(Cart.getArticleById(article._id)).toEqual(article);
     });
 });
 
@@ -423,7 +423,7 @@ describe("Calculate total price", () => {
             {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b061", 
+                _id:"5be1ed3f1c9d44000030b061", 
                 quantity:"100",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -431,7 +431,7 @@ describe("Calculate total price", () => {
             {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b062", 
+                _id:"5be1ed3f1c9d44000030b062", 
                 quantity:"100",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -439,7 +439,7 @@ describe("Calculate total price", () => {
             {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b063", 
+                _id:"5be1ed3f1c9d44000030b063", 
                 quantity:"100",
                 price:"4500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -447,7 +447,7 @@ describe("Calculate total price", () => {
             {
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b064", 
+                _id:"5be1ed3f1c9d44000030b064", 
                 quantity:"100",
                 price:"45",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -471,7 +471,7 @@ describe("Calculate total price", () => {
         let itemOne = {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b061", 
+            _id:"5be1ed3f1c9d44000030b061", 
             quantity:"20",
             price:"1200",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -480,7 +480,7 @@ describe("Calculate total price", () => {
         let itemTwo = {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"30",
             price:"12500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -489,7 +489,7 @@ describe("Calculate total price", () => {
         let itemThree = {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b063", 
+            _id:"5be1ed3f1c9d44000030b063", 
             quantity:"40",
             price:"120500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -516,7 +516,7 @@ describe("Remove article controller", () => {
             Cart.addArticle({
                 name:"foo",
                 description:"my description",
-                id:"5be1ed3f1c9d44000030b061", 
+                _id:"5be1ed3f1c9d44000030b061", 
                 quantity:"10",
                 price:"455500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -534,7 +534,7 @@ describe("Remove article controller", () => {
         let article = generateArticle();
 
         Cart.addArticle(article);
-        const result = Cart.removeArticle(article.id);
+        const result = Cart.removeArticle(article._id);
 
         expect(result).toEqual(article);
     });
@@ -581,7 +581,7 @@ describe("Submit cart to server", () => {
         let firstArticle = {
             name:"foo",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b061", 
+            _id:"5be1ed3f1c9d44000030b061", 
             quantity:"10",
             price:"455500",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -590,7 +590,7 @@ describe("Submit cart to server", () => {
         let secondArticle = {
             name:"bar",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b062", 
+            _id:"5be1ed3f1c9d44000030b062", 
             quantity:"15",
             price:"35200",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"
@@ -599,7 +599,7 @@ describe("Submit cart to server", () => {
         let thirdArticle = {
             name:"ber",
             description:"my description",
-            id:"5be1ed3f1c9d44000030b06", 
+            _id:"5be1ed3f1c9d44000030b06", 
             quantity:"13",
             price:"65600",
             imageUrl:"http://localhost:3000/images/vcam_1.jpg"

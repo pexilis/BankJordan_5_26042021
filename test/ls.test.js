@@ -99,7 +99,7 @@ describe("Remove article from cart", () => {
             localStorage.setItem("test", "[]");
 
             modelTest.addItem({
-                id:"123456",
+                _id:"123456",
                 name:"foo"
             });
 
@@ -116,17 +116,17 @@ describe("Remove article from cart", () => {
         const model = new localStorageModel("test");
 
         model.addItem({
-            id:"1234",
+            _id:"1234",
             name:"foo"
         });
 
         model.addItem({
-            id:"1235",
+            _id:"1235",
             name:"bar"
         });
 
         model.addItem({
-            id:"1236",
+            _id:"1236",
             name:"bi"
         });
 
@@ -134,11 +134,11 @@ describe("Remove article from cart", () => {
 
         expect(model.getArray()).toEqual([
             {
-                id:"1235",
+                _id:"1235",
                 name:"bar"
             },
             {
-                id:"1236",
+                _id:"1236",
                 name:"bi"
             }
         ]);
@@ -167,8 +167,8 @@ describe("Clear LocalStorage", () => {
         localStorage.setItem("test", "[]");
         let model = new localStorageModel("test");
 
-        model.addItem({name:"toto", id:"1234"});
-        model.addItem({name:"tutu", id:"1236"});
+        model.addItem({name:"toto", _id:"1234"});
+        model.addItem({name:"tutu", _id:"1236"});
 
         model.clearArray();
 

@@ -20,7 +20,7 @@ const Cart = (() => {
 
     const errorFormat = article => {
         const objCheck = Validator.checkRegex({
-            "uuid":article.id,
+            "uuid":article._id,
             "quantity":article.quantity,
             "price":article.price,
             "url":article.imageUrl,
@@ -54,7 +54,7 @@ const Cart = (() => {
         const articles = CartModel.getArray();
         
         for (let i = 0 ; i < articles.length ; i++) {
-            const uuid = articles[i].id;
+            const uuid = articles[i]._id;
             const result = Validator.checkRegex({"uuid":uuid});
             if (!result.valid){
                 throw {error:"FORMAT_ERROR"};
@@ -79,7 +79,7 @@ const Cart = (() => {
             throw {error:"ADD_ERROR"};
         }
 
-        CartModel.setById(article.id, article);
+        CartModel.setById(article._id, article);
     }
 
     const updatePaidPrice = article => {
@@ -92,7 +92,7 @@ const Cart = (() => {
     self.addArticle = article => {
         errorFormat(article);
 
-        const old = CartModel.getById(article.id);
+        const old = CartModel.getById(article._id);
         
         if (old){
             updateArticleWithNewQuantity(old, article);
@@ -101,7 +101,7 @@ const Cart = (() => {
             CartModel.addItem(article);
         }
 
-        return CartModel.getById(article.id);
+        return CartModel.getById(article._id);
     }
 
     self.calculateQuantities = _ => {
@@ -175,7 +175,7 @@ const Cart = (() => {
 
         articles.map(article => {
             const quantity = Number.parseInt(article.quantity);
-            const uuid = article.id;
+            const uuid = article._id;
             for (let i = 0 ; i < quantity ; i++){
                 products.push(uuid);
             }

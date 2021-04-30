@@ -16,7 +16,7 @@ class localStorageAPI {
 
     errorAccess(id) {
         const arrItem = this.getArray(this.name);
-        let item = arrItem.find(item => item.id === id);
+        let item = arrItem.find(item => item._id === id);
         const notExist = (item === undefined);
         
         if (notExist) throw {error:"ACCESS_ERROR"};
@@ -45,7 +45,7 @@ class localStorageAPI {
     getById(id) {
         this.errorInit();
         const arrItem = this.getArray(this.name);
-        const item = arrItem.find(item => item.id === id);
+        const item = arrItem.find(item => item._id === id);
         return item;
     }
 
@@ -62,7 +62,7 @@ class localStorageAPI {
         
         for (let i = 0 ; i < arrArticle.length ; i++) {
             const currentArticle = arrArticle[i];
-            if (currentArticle.id === id){
+            if (currentArticle._id === id){
                 arrArticle[i] = newItem;
             }
         }
@@ -76,7 +76,7 @@ class localStorageAPI {
         this.errorAccess(id);
 
         let array = this.getArray();
-        array = array.filter(item => item.id !== id);
+        array = array.filter(item => item._id !== id);
         localStorage.setItem(this.name, JSON.stringify(array));
     }
 }
