@@ -1,4 +1,9 @@
-import Cart from "../cart";
+import LocalStorageAPI from "../utils/localStorageAPI.js";
+import ConfigValidator from "../config/validator.config";
+import RequestFactory from "../config/request.config";
+import Cart from "../controllers/cart.js";
+
+Cart.init(new LocalStorageAPI("cart-storage"), ConfigValidator, RequestFactory);
 
 const generateArticle = _ => {
     return  {
@@ -300,6 +305,86 @@ describe("Add article to cart", () => {
         const result = Cart.addArticle(article);
 
         expect(result).toEqual(article);
+    });
+
+    it ("should remove article when quantity is 0", () => {
+        localStorage.setItem("cart-storage", "[]");
+        let article = generateArticle();
+    });
+});
+
+describe("Set article by id", () => {
+    it ("should throw error on bad uuid format", () => {
+        const article = generateArticle();
+        let error;
+
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(article);
+        
+        article.price = "5600";
+
+        try{
+            Cart.setArticleById("123", article);
+        }catch(e){
+            error = e;
+        }
+
+        expect(error).toEqual({error:"FORMAT_ERROR"});
+    });
+
+    it ("should update when everything is ok", () => {
+        const article = generateArticle();
+        let error;
+
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(article);
+        article.price = "5600";
+
+        Cart.setArticleById(article.id, article);
+    });
+
+    it("should throw an error on invalid article", () => {
+        const article = generateArticle();
+        let error;
+
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(article);
+        article.price = "56";
+
+        try{
+            Cart.setArticleById(article.id, article);
+        }catch(e){
+            error = e;
+        }
+
+        expect(error).toEqual({error:"FORMAT_ERROR"});
+    });
+
+});
+
+describe("Get article by id", () => {
+    it("should throw an error on bad id", () => {
+        const article = generateArticle();
+        let error;
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(article);
+
+        try{
+            let article = Cart.getArticleById("123");
+        }catch(e){
+            error = e;
+        }
+
+        expect(error).toEqual({error:"FORMAT_ERROR"});
+    });
+
+    it("should return article", () => {
+        const article = generateArticle();
+        let error;
+        localStorage.setItem("cart-storage", "[]");
+        Cart.addArticle(article);
+        
+        expect(Cart.getArticleById(article.id)).toEqual(article);
     });
 });
 
