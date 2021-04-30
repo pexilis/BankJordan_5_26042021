@@ -15,7 +15,10 @@ class localStorageAPI {
     }
 
     errorAccess(id) {
-        const notExist = (this.getById(id) === undefined);
+        const arrItem = this.getArray(this.name);
+        let item = arrItem.find(item => item.id === id);
+        const notExist = (item === undefined);
+        
         if (notExist) throw {error:"ACCESS_ERROR"};
     }
 
@@ -54,6 +57,7 @@ class localStorageAPI {
 
     setById(id, newItem) {
         this.errorInit();
+        this.errorAccess(id);
         let arrArticle = this.getArray(name);
         
         for (let i = 0 ; i < arrArticle.length ; i++) {

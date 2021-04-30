@@ -1,4 +1,4 @@
-import localStorageModel from "../localStorageModel";
+import localStorageModel from "../utils/localStorageAPI.js";
 
 describe("Model Error Handling", () => {
     it("should throw an error initialization (getArray)", () => {
