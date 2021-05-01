@@ -27,6 +27,19 @@ const genericSend = async(url, method, headers, body=undefined) => {
     return response;
 }
 
+const stringifyJSON = (json) => {
+    const validJS = (json !== null && typeof json === "object");
+    if (!validJS)
+        return false; 
+
+       
+    Object.entries(json).map(([key, value]) => {
+        if (typeof value === "number")
+            json[key] = value.toString();  
+        stringifyJSON(value)
+    });
+}
+
 const genericJSON = async(response) => {
     let json;
 
@@ -36,6 +49,7 @@ const genericJSON = async(response) => {
         throw {error:"ERROR_JSON"}
     }
 
+    stringifyJSON(json);
     return json;
 }
 
