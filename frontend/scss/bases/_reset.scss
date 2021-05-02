@@ -1,0 +1,30 @@
+*, *::before, *::after{
+	margin: 0;
+	padding: 0;
+	border:none;
+	font-size: 100%;
+    box-sizing:border-box;
+	font-family: 'Commissioner', sans-serif;
+}
+
+html{
+	scroll-behavior: smooth;
+	height:100%;
+}
+
+body{
+	min-height:100%;
+	position:relative;
+	counter-reset:badgeCounter;
+}
+
+a{
+    color:inherit;
+    text-decoration: none;
+}
+
+*:focus:not(:focus-visible) {  
+	outline: none;  
+}
+
+
