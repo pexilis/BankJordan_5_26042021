@@ -60,7 +60,7 @@
 
 @mixin fillVertical($bgColor, $duration, $ease){
     @include afterFull($bgColor);
-
+    
     &::after{
         transition:transform $duration $ease;
         transform:scaleX(0);
@@ -70,6 +70,19 @@
     &:hover::after{
         transform:scaleX(1);
         transform-origin:left;
+    }
+}
+
+@mixin lateralVertical($bgColor, $duration, $ease){
+    @include afterFull($bgColor);
+
+    &::after{
+        transition:all $duration $ease;
+        transform:translateX(-100%);
+    }
+
+    &:hover::after{
+        transform:translateX(0);
     }
 }
 
