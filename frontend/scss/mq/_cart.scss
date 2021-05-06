@@ -1,0 +1,13 @@
+@media screen and (min-width:768px) and (max-width:1023px){
+    @include l-cart--tablet;
+}
+
+@media screen and (min-width:1024px) and (max-width:1439px) {
+    @include l-cart--tablet;
+    @include form--laptop;
+}
+
+@media screen and (min-width:1440px) {
+    @include l-cart--tablet;
+    @include form--laptop;
+}
