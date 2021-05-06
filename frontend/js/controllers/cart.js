@@ -2,14 +2,18 @@ const Cart = (() => {
     let self = {};
 
     const cartName = "cart-storage";
+    const commandName = "command-storage";
+
     let CartModel = null;
     let Validator = null;
     let RequestFactory = null;
+    let CommandModel = null;
 
-    self.init = (model, validator, request) => {
+    self.init = (model, commandmodel, validator, request) => {
         CartModel = model;
         Validator = validator;
         RequestFactory = request;
+        CommandModel = commandmodel;
     }
 
     self.listArticles = async() => {
@@ -130,6 +134,8 @@ const Cart = (() => {
             paidPrices.push(paidPrice);
         });
 
+        if (arrArticle.length === 0)
+            return 0;
         return paidPrices.reduce((old, next) => old + next);
     }
 
@@ -196,6 +202,9 @@ const Cart = (() => {
             products
         });
 
+        result._id = result.orderId;
+        
+        CommandModel.addItem(result);
         Cart.clearCart();
         return result;
     }

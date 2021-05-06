@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "server": "node server",
-    "test-watch": "jest --watch --all --coverage"
+    "test-watch": "jest --watch --all --coverage",
+    "sass-watch": "sass --watch frontend/scss:frontend/css"
   },
   "author": "",
   "license": "ISC",

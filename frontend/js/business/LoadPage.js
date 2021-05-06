@@ -10,7 +10,7 @@ const LoadPage = (() => {
 
     self.run = async(opts) => {
         const serverProducts = await Product.fetchEvery();
-        const clientProducts = await Cart.listArticles();
+        let clientProducts = await Cart.listArticles();
         const serverUUIDS = serverProducts.map(product => product._id);
 
         clientProducts.filter(product => serverUUIDS.includes(product._id))
@@ -24,14 +24,25 @@ const LoadPage = (() => {
         const totalProducts = Cart.calculateQuantities();
         const selectedProduct = serverProducts.find(product => product._id === opts?.id);
         const minQuantitySelected = 1;
-        const maxQuantitySelected = 99 - selectedProduct.quantity;
+        let maxQuantitySelected;
+
+        if (selectedProduct?.quantity){
+            maxQuantitySelected = 99 - Number.parseInt(selectedProduct?.quantity);
+        }else{
+            maxQuantitySelected = 99;
+        }
+            
+        clientProducts = await Cart.listArticles();
+        const totalPrice = Cart.calculateTotalPrices();
 
         return {
+           clientProducts,
            serverProducts,
            totalProducts,
            selectedProduct,
            minQuantitySelected,
            maxQuantitySelected,
+           totalPrice
         }
     }
     return self;

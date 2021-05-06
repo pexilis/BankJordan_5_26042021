@@ -1,0 +1,19 @@
+.input--cart{
+    width:100%;
+    height:47px;
+    border-bottom:1px solid lightgray;
+    transition:border-bottom-color 0.2s ease-in-out;
+
+    &:focus{
+        outline:none;
+        border-bottom-color:black;
+    }
+
+    &:focus:not(:valid){
+        border-bottom-color:red;
+    }
+
+    &:focus:valid{
+        border-bottom-color:green;
+    }
+}

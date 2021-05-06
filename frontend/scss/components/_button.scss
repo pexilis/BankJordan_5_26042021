@@ -1,0 +1,19 @@
+.btn{
+    display:block;
+    height:67px;
+    width:100%;
+    max-width:337px;
+    text-transform:uppercase;
+   
+    &__text{
+        @include fluid-type(320px, 1440px, 16px, 26px);
+    }
+}
+
+$darkenColor : darken(map-get($baseColor, empahisColor), 15);
+
+.btn--green{
+    background-color:map-get($baseColor, empahisColor);
+    color:white;
+    @include fillVertical($darkenColor, 0.2s, ease-in-out)
+}
