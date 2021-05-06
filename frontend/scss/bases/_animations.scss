@@ -152,10 +152,6 @@
         opacity:0;
         transition: opacity $duration $ease;
     }
-
-    &:hover::after{
-        opacity:1;
-    }
 }
 
 @keyframes apparition{
