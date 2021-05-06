@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="css/cart.css">
+    <script src="https://kit.fontawesome.com/943c921e25.js" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <header class="l-header">
+        <div class="l-center l-header__wrapper">
+            <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            <button>
+                <span class="l-header__counter"></span>
+                <img src="img/cart-logo.png" class="img--cart" alt="Cart Logo">
+            </button>
+        </div>
+    </header>
+
+    <main class="l-main l-center">
+        <section class="l-cart">
+            <div class="l-cart__left">
+                <div>
+                    <template id="cardTemplate">
+                        <div class="card--cart" tabindex="0">
+                            <i class="fas fa-times card__close"></i>
+                            <img src="" alt="">
+                            <header>
+                                <h2 class="card__title">Mon titre</h2>
+                                <label for="quantity" class="card__quantity">Quantité : </label>
+                                <select id="quantity">
+                                    
+                                </select>
+                                <span class="card__price">Prix total : 1500€</span>
+                            </header>
+                        </div>
+                    </template>
+                </div>
+                <span class="l-cart__total"></span>
+            </div>
+            <form name="cartForm" class="form--cart">
+               <header class="form__header">
+                    <h2>Formulaire de commande</h2>
+               </header>
+               <div class="form__grid">
+                    <div class="form__group">
+                        <input class="input--cart" type="text" id="lastname" name="lastName" required>
+                        <label for="lastname">Nom :</label>
+                    </div>
+                    <div class="form__group">
+                        <input class="input--cart" type="text" id="firstname" name="firstName" required>
+                        <label for="firstname">Prénom :</label>
+                    </div>
+                    <div class="form__group">
+                        <input class="input--cart" type="email" id="email" name="email" required>
+                        <label for="email">Email :</label>
+                    </div>
+                    <div class="form__group">
+                        <input class="input--cart" type="city" id="city" name="city" required>
+                        <label for="city">Ville :</label>
+                    </div>
+                    <div class="form__group">
+                        <input class="input--cart" type="address" id="address" name="address" required>
+                        <label for="address">Addresse :</label>
+                    </div>
+               </div>
+               <button class="btn btn--green">
+                 <span class="btn__text">
+                    Valider le panier
+                 </span>
+               </button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-center l-footer__wrapper">
+            <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="cart.html">Panier</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="js/view/cart.js" type="module"></script>
+</body>
+</html>
