@@ -2,13 +2,10 @@
     padding:11px;
     padding-bottom:20px;
     cursor:pointer;
-
-    
-    
+    border-bottom: 1px solid lightgray;
 
     .card__img{
         position:relative;
-        object-fit:cover;
         width:100%;
         height:178px;
         margin-bottom:16px;
@@ -41,6 +38,62 @@
 
     div{
         @include lateralVertical(rgba(100, 100, 100, 0.6), 0.2s, ease-in-out);
+    }
+}
+
+.card--cart{
+    position:relative;
+    display:flex;
+    align-items:center;
+    border-bottom: 1px solid lightgray;
+
+    .card__close{
+        position:absolute;
+        top:5px;
+        right:5px;
+        user-select: none;
+    }
+    
+    img{
+        margin-left:6px;
+        width:165px;
+        height:103px;
+        user-select:none;
+    }
+
+    header{
+        margin-left:11px;
+
+        select{
+            display: inline;
+        }
+    }
+ 
+    .card__price, 
+    .card__title,
+    .card__quantity{
+        color:map-get($baseColor, textColor);
+        font-weight:500;
+    }
+
+    .card__price{
+        display:block;
+    }
+
+    .card__title{
+        @include fluid-type(375px, 1440px, 20px, 26px);
+        margin-bottom:5px;
+    }
+
+    .card__quantity{
+        display:inline-block;
+        @include fluid-type(375px, 1440px, 16px, 20px);
+        margin-bottom:5px;
+    }
+
+    .card__price{
+        @include fluid-type(375px, 1440px, 16px, 20px);
+        margin-bottom:5px;
     }
 }
 
