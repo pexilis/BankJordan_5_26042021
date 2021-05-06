@@ -1,0 +1,29 @@
+.l-product{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    margin-bottom:200px;
+    margin-top:150px;
+    
+    
+    img{
+        margin-top:35px;
+        height:337px;
+        width:100%;
+        margin-bottom:18px;
+    }
+}
+
+@mixin l-product--laptop{
+    .l-product{
+        margin-top:54px;
+        flex-direction:row;
+        align-items:center;
+        justify-content: space-between;
+
+        img{
+            @include box(588px);
+        }
+    }
+}

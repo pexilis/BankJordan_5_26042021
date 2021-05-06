@@ -1,0 +1,15 @@
+.l-header{
+    background-color:lightgray;
+    padding-top:26px;
+    padding-bottom:20px;
+   
+    &__wrapper{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+    }
+
+    button{
+        background-color:transparent;
+    }
+}
