@@ -10,11 +10,13 @@ const AddArticle = (() => {
         const addedArticle = Cart.addArticle(article);
         const minQuantitySelected = 1;
         const maxQuantitySelected = 99 - addedArticle.quantity;
+        const totalProducts = Cart.calculateQuantities();
 
         return {
             addedArticle,
             minQuantitySelected,
-            maxQuantitySelected
+            maxQuantitySelected,
+            totalProducts
         }
     }
 

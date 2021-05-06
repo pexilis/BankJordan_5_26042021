@@ -1,7 +1,7 @@
-import LocalStorageAPI from "../utils/localStorageAPI.js";
-import ConfigValidator from "../config/validator.config";
-import RequestFactory from "../config/request.config";
-import Cart from "../controllers/cart.js";
+import LocalStorageAPI from "../frontend/js/utils/localStorageAPI.js";
+import ConfigValidator from "../frontend/js/config/validator.config.js";
+import RequestFactory from "../frontend/js/config/request.config.hs";
+import Cart from "../frontend/js/controllers/cart.js";
 
 Cart.init(new LocalStorageAPI("cart-storage"), ConfigValidator, RequestFactory);
 
@@ -618,3 +618,4 @@ describe("Submit cart to server", () => {
         return Cart.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 });
+

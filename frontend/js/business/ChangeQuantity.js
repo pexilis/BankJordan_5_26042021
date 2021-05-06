@@ -11,7 +11,7 @@ const ChangeQuantity = (() => {
             throw new {error:"UNDEFINED_ERROR"};
         
         const id = opts.id; 
-        const quantity = opts.quantity;
+        let quantity = opts.quantity;
         const articleToSet = Cart.getArticleById(id);
 
         if (articleToSet === undefined)
@@ -22,10 +22,12 @@ const ChangeQuantity = (() => {
         articleToSet.quantity = quantity;
         Cart.setArticleById(id, articleToSet);
         const totalPrice = Cart.calculateTotalPrices();
+        quantity = Cart.calculateQuantities();
 
         return {
             updatedPrice:articleToSet.calculatePrice,
-            totalPrice:totalPrice.toString()
+            totalPrice:totalPrice.toString(),
+            quantity
         }
     }
 
@@ -34,11 +36,13 @@ const ChangeQuantity = (() => {
             throw new {error:"UNDEFINED_ERROR"};
 
         let quantity = Number.parseInt(opts.quantity);
-        let price = Number.parseInt(opts.price.split("0")[0]);
+
+
+        let price = Number.parseInt(opts.price.slice(0, opts.price.length - 2));
         return price * quantity;
     }
 
     return self;
 })();
 
-export default ChangeQuantity
+export default ChangeQuantity;

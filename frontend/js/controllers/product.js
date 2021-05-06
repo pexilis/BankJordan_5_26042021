@@ -9,10 +9,6 @@ const Product = (() => {
         Validator = validator;
     }
 
-    
-
-    
-
     self.fetchEvery = async() => {
         let request = RequestFactory.get("getProducts");
         let jsonResponse = request.send();

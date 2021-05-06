@@ -1,4 +1,4 @@
-const LoadPage = (() => {
+const DeleteArticle = (() => {
     let self = {};
     let Cart = null;
    
@@ -9,14 +9,16 @@ const LoadPage = (() => {
     self.run = async(id) => {
         const article = Cart.removeArticle(id);
         const totalPrice = Cart.calculateTotalPrices();
+        const quantity = Cart.calculateQuantities();
 
         return {
             article,
-            totalPrice
+            totalPrice,
+            quantity
         };
     }
 
     return self;
 })();
 
-export default LoadPage
+export default DeleteArticle;
