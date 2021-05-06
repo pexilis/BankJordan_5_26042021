@@ -1,9 +1,9 @@
 import LocalStorageAPI from "../frontend/js/utils/localStorageAPI.js";
 import ConfigValidator from "../frontend/js/config/validator.config.js";
-import RequestFactory from "../frontend/js/config/request.config.hs";
+import RequestFactory from "../frontend/js/config/request.config.js";
 import Cart from "../frontend/js/controllers/cart.js";
 
-Cart.init(new LocalStorageAPI("cart-storage"), ConfigValidator, RequestFactory);
+Cart.init(new LocalStorageAPI("cart-storage"), new LocalStorageAPI("command-storage"), ConfigValidator, RequestFactory);
 
 const generateArticle = _ => {
     return  {
@@ -89,12 +89,12 @@ describe("See all articles", () => {
     });
 
     it("should return an error if only one of the items is invalid", () => {
-        expect.assertions(1);
+        return Cart.listArticles().catch(e => expect(e).toEqual({error:"FORMAT_ERROR"}));        expect.assertions(1);
         let arrItem = generateArrItem();
         arrItem[0].quantity = "1000";
 
         localStorage.setItem("cart-storage", JSON.stringify(arrItem));
-        return Cart.listArticles().catch(e => expect(e).toEqual({error:"FORMAT_ERROR"}));
+
     });
 });
 
