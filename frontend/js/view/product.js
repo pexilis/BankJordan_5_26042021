@@ -1,32 +1,18 @@
-import Global from "../config/global.config.js";
-
-import LocalStorageAPI from "../utils/localStorageAPI.js";
-import ConfigValidator from "../config/validator.config.js";
-import RequestFactory from "../config/request.config.js";
-import "../config/localstorage.config.js";
-
+import "../loaders/global.loader.js";
 import PageConfig from "../config/view/product.config.js";
+import PageGlobal from "../config/view/global.config.js";
 
-import Cart from "../controllers/cart.js";
-import Product from "../controllers/product.js";
-
-import BuisnessLoad from "../business/LoadPage.js";
-import ChangeQuantity from "../business/ChangeQuantity.js";
-import AddArticle from "../business/AddArticle.js";
-
-Cart.init(new LocalStorageAPI("cart-storage"), 
-          new LocalStorageAPI("command-storage"), 
-          ConfigValidator, 
-          RequestFactory
-);
-
-Product.init(RequestFactory, ConfigValidator);
-
-BuisnessLoad.init(Product, Cart);
-ChangeQuantity.init(Cart);
-AddArticle.init(Cart);
-
-PageConfig.init();
+(() => {
+    const CartModel = new LocalStorageAPI("cart-storage");
+    PageConfig.init();
+    CartError.init(ConfigValidator, CartModel);
+    Cart.init(CartModel, RequestFactory, CartError);
+    Product.init(RequestFactory, ConfigValidator, CartError);
+    CartCalculate.init(Cart);
+    LoadPage.init(Product, Cart, CartCalculate);
+    AddArticle.init(Cart, CartCalculate);
+    ChangeQuantity.init(Cart, CartCalculate);
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
     let configProduct = PageConfig.data;
@@ -38,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             counterElement 
         } = PageConfig;
 
-    BuisnessLoad.run({id}).then(data => {
+    LoadPage.run({id}).then(data => {
         const {lenses, imageUrl:urlImg} = data.selectedProduct;
         const {maxQuantitySelected:maxQuantity, totalProducts} = data;
 
@@ -48,11 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
         PageConfig.drawLenses(lenses);
         PageConfig.drawImage(urlImg);
         PageConfig.drawText(data.selectedProduct);
-        PageConfig.drawQuantities(totalProducts);   
+        PageGlobal.drawQuantities(totalProducts);   
 
         configProduct.quantity = selectQuantity.value;
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     })
 
     selectQuantity.addEventListener("change", e => {
@@ -65,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ChangeQuantity.page({quantity,price}).then(data => {
             PageConfig.drawTotalPrice(data);
         }).catch(error => {
-            alert(error.error);
+            console.log(error);
         })
     });
 
@@ -79,9 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
             PageConfig.drawQuantity(data.maxQuantitySelected);
             const totalProducts = data.totalProducts;
             configProduct.quantity = 1;
-            PageConfig.drawQuantities(totalProducts);
+            PageGlobal.drawQuantities(totalProducts);
         }).catch(error => {
-            alert(error.error);
+            console.log(error);
         })
     });
 });

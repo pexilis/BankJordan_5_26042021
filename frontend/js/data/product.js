@@ -2,11 +2,13 @@ const Product = (() => {
     let self = {};
     let RequestFactory = null; 
     let Validator = null;
+    let CartError = null;
 
 
-    self.init = (request, validator) => {
+    self.init = (request, validator, error) => {
         RequestFactory = request;
         Validator = validator;
+        CartError = error;
     }
 
     self.fetchEvery = async() => {
@@ -16,11 +18,7 @@ const Product = (() => {
     }
 
     self.fetchById = async(id) => {
-        if (Validator.checkRegex({
-            "uuid":id
-        }).valid === false)
-            throw {error:"FORMAT_ERROR"};
-        
+        CartError.errorID(id);
         let request = RequestFactory.get("getProductById");
         let jsonResponse = request.send({id});
 

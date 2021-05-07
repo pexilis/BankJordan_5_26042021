@@ -1,11 +1,13 @@
 const LoadPage = (() => {
     let self = {};
     let Cart = null;
+    let CartCalculate = null;
     let Product = null;
 
-    self.init = (product, cart) => {
+    self.init = (product, cart, calcul) => {
         Cart = cart;
         Product = product;
+        CartCalculate = calcul;
     }
 
     self.run = async(opts) => {
@@ -21,7 +23,7 @@ const LoadPage = (() => {
             Cart.setArticleById(id, serverProduct);
         });
 
-        const totalProducts = Cart.calculateQuantities();
+        const totalProducts = CartCalculate.quantities();
         const selectedProduct = serverProducts.find(product => product._id === opts?.id);
         const minQuantitySelected = 1;
         let maxQuantitySelected;
@@ -33,7 +35,7 @@ const LoadPage = (() => {
         }
             
         clientProducts = await Cart.listArticles();
-        const totalPrice = Cart.calculateTotalPrices();
+        const totalPrice = CartCalculate.totalPrices();
 
         return {
            clientProducts,

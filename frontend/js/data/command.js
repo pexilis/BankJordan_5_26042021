@@ -1,12 +1,12 @@
 const Command = (() => {
     let self = {};
     let CommandModel = null;
-    let Validator = null;
+    let CommandError = null;
 
-
-    self.init = (model,validator) => {
+    
+    self.init = (model, error) => {
         CommandModel = model;
-        Validator = validator
+        CommandError = error;
     }
 
     self.add = newCommand => {
@@ -17,17 +17,8 @@ const Command = (() => {
         CommandModel.addItem(newCommand);
     }
 
-    const errorUUID = id => {
-        const result = Validator.checkRegex({
-            "orderId":id
-        });
-
-        if (!result.valid)
-            throw {error:"ERROR_FORMAT"};
-    }
-
     self.get = id => {
-        errorUUID(id);
+        CommandError.errorUUID(id);
         return CommandModel.getById(id);
     }
 

@@ -38,6 +38,11 @@ const PageConfig = (() => {
         return cloned;
     }
 
+    self.drawPrice = (card, price) => {
+        const priceElement = card.querySelector(".card__price");
+        priceElement.textContent = `${price}€`;
+    }
+
     self.drawQuantities = totalProducts => {
         self.counterElement.style.display = "none";
     
@@ -45,11 +50,6 @@ const PageConfig = (() => {
             self.counterElement.textContent = totalProducts;
             self.counterElement.style.display = "block";
         }
-    }
-
-    self.drawPrice = (card, price) => {
-        const priceElement = card.querySelector(".card__price");
-        priceElement.textContent = `${price}€`;
     }
 
     self.drawTotal = total => {

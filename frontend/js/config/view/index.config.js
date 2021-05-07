@@ -3,7 +3,6 @@ const PageConfig = (() => {
 
     self.templateCardElement = document.querySelector("#templateCard");
     self.cardContainer = document.querySelector(".l-presentation div");
-    self.counterElement = document.querySelector(".l-header__counter");
 
     self.generateCard = (data, template) => {
         const temp = template;
@@ -18,15 +17,6 @@ const PageConfig = (() => {
         cloned.querySelector(".card--article").setAttribute("href", urlProduct);
     
         return cloned;
-    }
-
-    self.drawQuantities = totalProducts => {
-        self.counterElement.style.display = "none";
-    
-        if (totalProducts > 0){
-            self.counterElement.textContent = totalProducts;
-            self.counterElement.style.display = "block";
-        }
     }
 
     return self;

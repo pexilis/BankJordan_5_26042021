@@ -1,57 +1,26 @@
-import Global from "../config/global.config.js";
-import LocalStorageAPI from "../utils/localStorageAPI.js";
-import ConfigValidator from "../config/validator.config.js";
-import RequestFactory from "../config/request.config.js";
-
-import Cart from "../controllers/cart.js";
-import Product from "../controllers/product.js";
+import "../loaders/global.loader.js";
 import PageConfig from "../config/view/cart.config.js";
+import PageGlobal from "../config/view/global.config.js";
 
-import LoadPage from "../business/LoadPage.js";
-import DeleteArticle from "../business/DeleteArticle.js";
-import ChangeQuantity from "../business/ChangeQuantity.js";
-import SubmitCart from "../business/SubmitCart.js";
-
-Cart.init(new LocalStorageAPI("cart-storage"), 
-          new LocalStorageAPI("command-storage"), 
-          ConfigValidator, 
-          RequestFactory
-);
-
-Product.init(RequestFactory, ConfigValidator);
-
-LoadPage.init(Product, Cart);
-DeleteArticle.init(Cart);
-ChangeQuantity.init(Cart);
-SubmitCart.init(Cart);
-
-
-const formToJSON = (form, keys) => {
-    console.log(form);
-    const formData = new FormData(form);
-    const jsonDict = {};
-    keys.map(key => {
-        const value = formData.get(key);
-        jsonDict[key] = value;
-    })
-
-    return jsonDict;
-}
-
-const findParentNode = (node, className) => {
-    let current = node;
-    let containClass = current.classList.contains(className);
-
-    while (!containClass){
-        current = current.parentNode;
-        containClass = current.classList.contains(className);
-    }
-    
-    return current;
-}
+(() => {
+    const CartModel = new LocalStorageAPI("cart-storage");
+    const CommandModel = new LocalStorageAPI("command-storage");
+    CartError.init(ConfigValidator, CartModel);
+    Cart.init(CartModel, RequestFactory, CartError);
+    CartCalculate.init(Cart);
+    CartSubmit.init(Cart);
+    Product.init(RequestFactory, ConfigValidator, CartError);
+    CommandError.init(ConfigValidator);
+    Command.init(CommandModel, CommandError);
+    LoadPage.init(Product, Cart, CartCalculate);
+    ChangeQuantity.init(Cart, CartCalculate);
+    LoadPage.init(Product, Cart, CartCalculate);
+    DeleteArticle.init(Cart, CartCalculate);
+    SubmitCart.init(Cart, CartSubmit, Command);
+})();
 
 const handleClose = target => {
-    const currentCard = findParentNode(target, "card--cart");
+    const currentCard = DOMApi.findParentNode(target, "card--cart");
         const id = currentCard.getAttribute("data-id");
 
         DeleteArticle.run(id).then(data => {
@@ -59,7 +28,7 @@ const handleClose = target => {
             cardContainer.removeChild(currentCard);
             totalElement.textContent = `Total : ${totalPrice}€`;
 
-            PageConfig.drawQuantities(quantity);
+            PageGlobal.drawQuantities(quantity);
             PageConfig.drawTotal(totalPrice);
 
         }).catch(error => {       
@@ -68,7 +37,7 @@ const handleClose = target => {
 }
 
 const handleChange = target => {
-    const currentCard = findParentNode(target, "card--cart");
+    const currentCard = DOMApi.findParentNode(target, "card--cart");
     const selectElement = currentCard.querySelector("select");
 
     const id = currentCard.getAttribute("data-id");
@@ -78,10 +47,10 @@ const handleChange = target => {
         const {updatedPrice, totalPrice, quantity} = data;
 
         PageConfig.drawPrice(currentCard, updatedPrice);
-        PageConfig.drawQuantities(quantity);
+        PageGlobal.drawQuantities(quantity);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     })
 }
 
@@ -96,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
             cardContainer.appendChild(card);
         });
 
-        PageConfig.drawQuantities(totalProducts);
+        PageGlobal.drawQuantities(totalProducts);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     });
 
     cardContainer.onclick = e => {
@@ -123,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     formButton.onclick = e => {
         e.preventDefault();
-        const opts = formToJSON(formElement, 
+        const opts = JSONManip.formToJSON(formElement, 
             [
                 "firstName", 
                 "lastName",
@@ -136,13 +105,13 @@ document.addEventListener("DOMContentLoaded", () => {
         SubmitCart.run(opts).then(data => {
             const {orderId} = data.result;
 
-            PageConfig.drawQuantities(0);
+            PageGlobal.drawQuantities(0);
             PageConfig.drawTotal(0);
             cardContainer.innerHTML = "";
             window.location.replace(`/command.html?id=${orderId}`);
 
         }).catch(error => {
-            alert(error.error);
+            console.log(error);
         })
     }
 });
