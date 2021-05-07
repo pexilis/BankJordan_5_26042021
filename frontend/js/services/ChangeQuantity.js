@@ -1,9 +1,11 @@
 const ChangeQuantity = (() => {
     let self = {};
     let Cart = null;
+    let CartCalculate = null;
     
-    self.init = (cart) => {
+    self.init = (cart, calcul) => {
         Cart = cart;
+        CartCalculate = calcul;
     }
 
     self.cart = async(opts) => {
@@ -21,8 +23,8 @@ const ChangeQuantity = (() => {
         
         articleToSet.quantity = quantity;
         Cart.setArticleById(id, articleToSet);
-        const totalPrice = Cart.calculateTotalPrices();
-        quantity = Cart.calculateQuantities();
+        const totalPrice = CartCalculate.totalPrices();
+        quantity = CartCalculate.quantities();
 
         return {
             updatedPrice:articleToSet.calculatePrice,
