@@ -21,18 +21,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let {
             selectQuantity, 
             productButton,                
-            counterElement 
+            counterElement,
+            buttonLoader,
+            place,
+            productContainer 
         } = PageConfig;
 
     LoadPage.run({id}).then(data => {
         const {lenses, imageUrl:urlImg} = data.selectedProduct;
         const {maxQuantitySelected:maxQuantity, totalProducts} = data;
+        const elementImage = PageConfig.generateImage(urlImg);
 
         configProduct.selectedProduct = data.selectedProduct;
         
+        console.log(elementImage);
+        productContainer.replaceChild(elementImage, place["image"]);
+
+
         PageConfig.drawQuantity(maxQuantity);
         PageConfig.drawLenses(lenses);
-        PageConfig.drawImage(urlImg);
         PageConfig.drawText(data.selectedProduct);
         PageGlobal.drawQuantities(totalProducts);   
 
@@ -57,17 +64,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     productButton.addEventListener("click", e => {
         e.preventDefault();
-        
+    
         const quantity = configProduct.quantity;
         configProduct.selectedProduct.quantity = quantity;
         
-        AddArticle.run(configProduct.selectedProduct).then(data => {
-            PageConfig.drawQuantity(data.maxQuantitySelected);
-            const totalProducts = data.totalProducts;
-            configProduct.quantity = 1;
-            PageGlobal.drawQuantities(totalProducts);
-        }).catch(error => {
-            console.log(error);
-        })
+       
+            AddArticle.run(configProduct.selectedProduct).then(data => {
+                PageConfig.drawQuantity(data.maxQuantitySelected);
+                const totalProducts = data.totalProducts;
+                configProduct.quantity = 1;
+                PageGlobal.drawQuantities(totalProducts);
+            }).catch(error => {
+                console.log(error);
+            })
     });
 });

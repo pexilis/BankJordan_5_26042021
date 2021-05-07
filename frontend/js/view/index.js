@@ -14,14 +14,13 @@ import PageGlobal from "../config/view/global.config.js";
 document.addEventListener("DOMContentLoaded", () => {
     LoadPage.run()
     .then(data => {
-        const serverProducts = data.serverProducts;
-        const totalProducts = data.totalProducts;
-        const templateCardElement = PageConfig.templateCardElement;
-        const cardContainer = PageConfig.cardContainer;
+        const {serverProducts, totalProducts} = data;
+        const {templateCardElement, cardContainer} = PageConfig;
+        const places = PageGlobal.place;
 
-        serverProducts.forEach(element => {
-            const card = PageConfig.generateCard(element, templateCardElement);
-            cardContainer.appendChild(card);
+        serverProducts.forEach((element, index) => {
+            const card = PageConfig.generateCard(element, index, templateCardElement);
+            cardContainer.replaceChild(card, places[index]);
         })
 
         PageGlobal.drawQuantities(totalProducts);

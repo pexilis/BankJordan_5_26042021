@@ -24,8 +24,10 @@ const handleClose = target => {
         const id = currentCard.getAttribute("data-id");
 
         DeleteArticle.run(id).then(data => {
+            const places = PageGlobal.place;
             const {article, totalPrice, quantity} = data;
-            cardContainer.removeChild(currentCard);
+            cardContainer.replaceChild(places[0], currentCard);
+            
             totalElement.textContent = `Total : ${totalPrice}€`;
 
             PageGlobal.drawQuantities(quantity);
@@ -59,10 +61,11 @@ const {cardContainer, formButton, totalElement, templateCard, formElement} = Pag
 document.addEventListener("DOMContentLoaded", () => {
     LoadPage.run().then(data => {
         const {clientProducts, totalProducts, totalPrice} = data;
-    
-        clientProducts.map(product => {
+        const places = PageGlobal.place;
+
+        clientProducts.map((product,index) => {
             const card = PageConfig.generateCard(product, templateCard);
-            cardContainer.appendChild(card);
+            cardContainer.replaceChild(card, places[index]);
         });
 
         PageGlobal.drawQuantities(totalProducts);
