@@ -1,3 +1,7 @@
+import urlParser from "./UrlParser.js";
+import JSONManip from "./JSONManip.js";
+
+
 const genericSend = async(url, method, headers, body=undefined) => {
     let response;
     try{
@@ -25,51 +29,6 @@ const genericSend = async(url, method, headers, body=undefined) => {
         throw {error:"SERVER_ERROR"};
     
     return response;
-}
-
-const stringifyJSON = (json) => {
-    const validJS = (json !== null && typeof json === "object");
-    if (!validJS)
-        return false; 
-
-       
-    Object.entries(json).map(([key, value]) => {
-        if (typeof value === "number")
-            json[key] = value.toString();  
-        stringifyJSON(value)
-    });
-}
-
-const genericJSON = async(response) => {
-    let json;
-
-    try{
-        json = await response.json();
-    }catch(e){
-        throw {error:"ERROR_JSON"}
-    }
-
-    stringifyJSON(json);
-    return json;
-}
-
-const urlParser = (endpoint, data) => {
-        let str = "?";
-        if (!data) return endpoint;
-
-        
-        Object.entries(data).map(([param, value]) => {
-            const encodedValue = encodeURIComponent(value);
-            if (endpoint.includes(`{${param}}`)){
-              endpoint = endpoint.replace(`{${param}}`, encodedValue);
-            }else{
-                str += `${param}=${encodedValue}&`
-            }
-        });
-
-        str = str.slice(0, -1);
-        endpoint += str;
-        return endpoint;
 }
 
 class BodyRequest {
@@ -104,7 +63,7 @@ class JSONUrlRequest extends UrlRequest{
             "Accept":"application/json"
         }, data);
 
-        return genericJSON(response);
+        return JSONManip.genericJSON(response);
     }
 }
 
@@ -117,7 +76,7 @@ class JSONBodyRequest extends BodyRequest {
             "Content-Type":"application/json"
         }, body);
 
-        return genericJSON(response);
+        return JSONManip.genericJSON(response);
     }
 }
 
