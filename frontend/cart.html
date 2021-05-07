@@ -13,11 +13,13 @@
 <body>
     <header class="l-header">
         <div class="l-center l-header__wrapper">
-            <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
-            <button>
-                <span class="l-header__counter"></span>
+            <a href="/">
+                <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            </a>
+            <a class="l-header__button" href="/cart.html">
+                <span class="l-header__counter apparition"></span>
                 <img src="img/cart-logo.png" class="img--cart" alt="Cart Logo">
-            </button>
+            </a>
         </div>
     </header>
 
@@ -25,28 +27,18 @@
         <section class="l-cart">
             <div class="l-cart__left">
                 <div>
-                    <template id="cardTemplate">
-                        <div class="card--cart" tabindex="0">
-                            <i class="fas fa-times card__close"></i>
-                            <img src="" alt="">
-                            <header>
-                                <h2 class="card__title">Mon titre</h2>
-                                <label for="quantity" class="card__quantity">Quantité : </label>
-                                <select id="quantity">
-                                    
-                                </select>
-                                <span class="card__price">Prix total : 1500€</span>
-                            </header>
-                        </div>
-                    </template>
+                    <div data-place="0"></div>
+                    <div data-place="1"></div>
+                    <div data-place="2"></div>
+                    <div data-place="3"></div>
                 </div>
                 <span class="l-cart__total"></span>
             </div>
             <form name="cartForm" class="form--cart">
                <header class="form__header">
-                    <h2>Formulaire de commande</h2>
+                    <h2 class="apparition">Formulaire de commande</h2>
                </header>
-               <div class="form__grid">
+               <div class="form__grid apparition">
                     <div class="form__group">
                         <input class="input--cart" type="text" id="lastname" name="lastName" required>
                         <label for="lastname">Nom :</label>
@@ -68,11 +60,11 @@
                         <label for="address">Addresse :</label>
                     </div>
                </div>
-               <button class="btn btn--green">
-                 <span class="btn__text">
+               <button class="form__button btn btn--green">
+                <span class="btn__text">
                     Valider le panier
-                 </span>
-               </button>
+                </span>
+            </button>
             </form>
         </section>
     </main>
@@ -87,6 +79,20 @@
         </div>
     </footer>
 
+    <template id="cardTemplate">
+        <div class="card--cart" tabindex="0">
+            <i class="fas fa-times card__close"></i>
+            <img src="" alt="">
+            <header>
+                <h2 class="card__title">Mon titre</h2>
+                <label for="quantity" class="card__quantity">Quantité : </label>
+                <select id="quantity">
+                    
+                </select>
+                <span class="card__price apparition">Total : 1500€</span>
+            </header>
+        </div>
+    </template>
     <script src="js/view/cart.js" type="module"></script>
 </body>
 </html>
