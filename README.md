@@ -6,11 +6,15 @@ Please refer to other devlogs by choosing the appropriate tag
 ## Table of contents
 
 - [Overview](#overview)
+    - [Refactoring](#refactoring)
 
 ## Overview
 
-Added functionality to access remote articles
+After adding many features to the project, I found it interesting to refactor it
 
+### Refactoring
+
+This refactoring consisted mainly in separating the concerns
 
  
 
