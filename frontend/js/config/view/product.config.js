@@ -10,8 +10,7 @@ const pageConfig = (() => {
     self.descriptionProduct = document.querySelector(".form__description p");
     self.totalPriceElement = document.querySelector(".form__price span");
     self.productButton = document.querySelector(".form__button");
-    self.counterElement = document.querySelector(".l-header__counter");
-
+    
     self.init = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -66,15 +65,6 @@ const pageConfig = (() => {
         let totalPriceElement = self.totalPriceElement;
         const priceStr = `Prix total : ${data}€`;
         totalPriceElement.textContent = priceStr;
-    }
-
-    self.drawQuantities = totalProducts => {
-        self.counterElement.style.display = "none";
-    
-        if (totalProducts > 0){
-            self.counterElement.textContent = totalProducts;
-            self.counterElement.style.display = "block";
-        }
     }
 
     return self;
