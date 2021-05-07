@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="En savoir plus sur un appareil photo en particulier. Retrouvez toutes les informations dont vous avez besoin sur un appareil photo chez Orinoco">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/943c921e25.js" crossorigin="anonymous" defer></script>
+    <title>Orinoco - Appareil Photo</title>
+</head>
+<body>
+    <header class="l-header">
+        <div class="l-center l-header__wrapper">
+            <a href="/">
+                <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            </a>
+            <a class="l-header__button" href="/cart.html">
+                <span class="l-header__counter apparition"></span>
+                <img src="img/cart-logo.png" class="img--cart" alt="Cart Logo">
+            </a>
+        </div>
+    </header>
+
+    <main class="l-center">
+        <section class="l-product">
+            <div class="l-product__img" data-place="image"></div>
+            <form name="productForm" class="form--product l-product__form">
+                <header class="form__header">
+                    <h1>
+                    </h1>
+                    <span>
+                    </span>
+                </header>
+                <div class="hook--description form__description">
+                    <h2 class="hook__title">Description</h2>
+                    <p class="hook__description">
+                    </p>
+                </div>
+
+                <div class="form__group">
+                    <label for="lenses">Lentilles</label>
+                    <select name="lenses" id="lenses">
+                        <option value="loading">Loading...</option>
+                    </select>
+                </div>
+                
+                <div class="form__group">
+                    <label for="quantity">Quantité</label>
+                    <select name="quantity" id="quantity">
+                        <option value="loading">Loading...</option>
+                    </select>
+                </div>
+
+                <div class="form__price">
+                    <span class="apparition"></span>
+                </div>
+                
+
+                <button class="form__button btn btn--green">
+                    <span class="btn__text">
+                        Ajouter au panier
+                    </span>
+                    <span class="position">
+                        <span class="btn__loader ld ld-ball ld-flip-h"></span>
+                    </span>
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="l-footer">
+        <div class="l-center l-footer__wrapper">
+            <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="cart.html">Panier</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

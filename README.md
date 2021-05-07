@@ -1,15 +1,28 @@
-# Orinoco #
+# Orinoco DevLog 
 
-This is the back end server for Project 5 of the Junior Web Developer path.
+This is the devlog of the Orinoco project, you will find here the progress of the project concerning the addition of new features and refactoring
 
-### Prerequisites ###
+Please refer to other devlogs by choosing the appropriate tag
+## Table of contents
 
-You will need to have Node and `npm` installed locally on your machine.
+- [Overview](#overview)
+    - [Refactoring](#refactoring)
 
-### Installation ###
+## Overview
 
-Clone this repo. From within the project folder, run `npm install`. You 
-can then run the server with `node server`. 
-The server should run on `localhost` with default port `3000`. If the
-server runs on another port for any reason, this is printed to the
-console when the server starts, e.g. `Listening on port 3001`.
+After adding many features to the project, I found it interesting to refactor it
+
+### Refactoring
+
+This refactoring consisted mainly in separating the concerns
+
+ 
+
+
+
+
+
+ 
+
+
+

@@ -1,0 +1,25 @@
+.l-product{
+    margin:41px 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    
+    &__img{
+        height:337px;
+        width:100%;
+        margin-bottom:18px;
+    }
+}
+
+@mixin l-product--laptop{
+    .l-product{
+        flex-direction:row;
+        align-items:center;
+        justify-content: space-between;
+
+        img{
+            @include box(588px);
+        }
+    }
+}
