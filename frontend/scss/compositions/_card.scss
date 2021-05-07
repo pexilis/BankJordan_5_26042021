@@ -1,4 +1,8 @@
 .card--article{
+    animation: apparition 0.3s ease-in-out forwards;
+    opacity:0;
+    background-color:white;
+    
     padding:11px;
     padding-bottom:20px;
     cursor:pointer;
@@ -42,6 +46,10 @@
 }
 
 .card--cart{
+    box-shadow:1px 1px 15px rgba(0, 0, 0, 0.3);
+    background-color:white;
+    animation: apparition 0.8s ease-in-out forwards;
+    opacity:0;
     position:relative;
     display:flex;
     align-items:center;

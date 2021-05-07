@@ -154,6 +154,21 @@
     }
 }
 
+.apparition{
+    animation: apparition 0.8s ease-in-out forwards;
+    opacity:0;
+}
+
+
+@keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
 @keyframes apparition{
     0%{
        opacity:0;
