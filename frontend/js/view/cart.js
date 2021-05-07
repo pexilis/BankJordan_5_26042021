@@ -1,3 +1,5 @@
+import "../../scss/cart.scss";
+
 import "../loaders/global.loader.js";
 import PageConfig from "../config/view/cart.config.js";
 import PageGlobal from "../config/view/global.config.js";

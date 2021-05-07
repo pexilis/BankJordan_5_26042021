@@ -1,3 +1,5 @@
+import "../../scss/index.scss";
+
 import "../loaders/global.loader.js";
 import PageConfig from "../config/view/index.config.js";
 import PageGlobal from "../config/view/global.config.js";

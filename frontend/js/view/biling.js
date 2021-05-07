@@ -1,3 +1,5 @@
+import "../../scss/biling.scss";
+
 import "../loaders/global.loader.js";
 import PageConfig from "../config/view/biling.config.js";
 import PageGlobal from "../config/view/global.config.js";
