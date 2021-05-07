@@ -3,9 +3,11 @@ import "../frontend/js/config/localstorage.config.js"
 import Validator from "../frontend/js/config/validator.config.js"
 
 import LocalStorageAPI from "../frontend/js/utils/localStorageAPI.js";
-import Command from "../frontend/js/controllers/command.js";
+import Command from "../frontend/js/data/command.js";
+import CommandError from "../frontend/js/errors/CommandError.js";
 
-Command.init(new LocalStorageAPI("command-storage"), Validator);
+CommandError.init(Validator);
+Command.init(new LocalStorageAPI("command-storage"), CommandError);
 
 let command = {
     "contact": {
