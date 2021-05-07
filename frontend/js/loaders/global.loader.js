@@ -23,6 +23,5 @@ const injectDependencies = () => {
 }
 
 (() => {
-   console.log("INJECT");
     injectDependencies();
 })();
