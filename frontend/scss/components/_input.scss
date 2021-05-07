@@ -10,10 +10,10 @@
     }
 
     &:focus:not(:valid){
-        border-bottom-color:red;
+        border-bottom-color:map-get($baseColor, alertColor);
     }
 
     &:focus:valid{
-        border-bottom-color:green;
+        border-bottom-color:map-get($baseColor, empahisColor);
     }
 }

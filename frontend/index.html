@@ -6,34 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/loadingio/loading.css@v2.0.0/dist/loading.min.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <header class="l-header">
         <div class="l-center l-header__wrapper">
-            <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
-            <button>
-                <span class="l-header__counter"></span>
+            <a href="/">
+                <img src="img/orinoco-logo.png" class="img--orinoco" alt="Logo Orinoco">
+            </a>
+            <a class="l-header__button" href="/cart.html">
+                <span class="l-header__counter apparition"></span>
                 <img src="img/cart-logo.png" class="img--cart" alt="Cart Logo">
-            </button>
+            </a>
         </div>
     </header>
 
+
     <main class="l-center">
         <section class="l-presentation">
-            <h1>Nos appareils photos en vente</h1>
+            <h1 class="apparition">Nos appareils photos en vente</h1>
             <div>
-                <template id="templateCard">
-                    <a href="" class="card--article" tabindex="0">
-                        <div class="card__img">
-                            <img class="card__img" src="" alt="">
-                        </div>
-                        <header class="card__header">
-                            <h2></h2>
-                            <span></span>
-                        </header>
-                    </a>
-                </template> 
+                <div data-place="0"></div>
+                <div data-place="1"></div>
+                <div data-place="2"></div>
+                <div data-place="3"></div>
+                <div data-place="4"></div>
             </div>
         </section>
     </main>
@@ -48,6 +46,17 @@
         </div>
     </footer>
 
+    <template id="templateCard">
+        <a href="" class="card--article" tabindex="0">
+            <div class="card__img">
+                <img class="card__img" src="" alt="">
+            </div>
+            <header class="card__header">
+                <h2></h2>
+                <span></span>
+            </header>
+        </a>
+    </template> 
     <script src="js/view/index.js" type="module"></script>
 </body>
 </html>

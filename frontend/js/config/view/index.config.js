@@ -4,22 +4,30 @@ const PageConfig = (() => {
     self.templateCardElement = document.querySelector("#templateCard");
     self.cardContainer = document.querySelector(".l-presentation div");
 
-    self.generateCard = (data, template) => {
+    self.generateCard = (data, index, template) => {
         const temp = template;
         const cloned = temp.content.cloneNode(true);
     
         const formatedPrice = `${data.price.slice(0, data.price.length - 2)}€`;
         const urlProduct = `/product.html?id=${data._id}`;
-    
-        cloned.querySelector(".card__header h2").textContent = data.name;
-        cloned.querySelector(".card__header span").textContent = formatedPrice;
-        cloned.querySelector(".card__img img").setAttribute("src", data.imageUrl);
-        cloned.querySelector(".card--article").setAttribute("href", urlProduct);
+        
+        const element = cloned.querySelector("a");
+        const titleElement = cloned.querySelector(".card__header h2");
+        const priceElement =  cloned.querySelector(".card__header span");
+        const imgElement = cloned.querySelector(".card__img img");
+        const urlElement =  cloned.querySelector(".card--article");
+
+        element.style.animationDelay = `${index * 0.5}s`;
+        titleElement.textContent = data.name;
+        priceElement.textContent = formatedPrice;
+        imgElement.setAttribute("src", data.imageUrl);
+        urlElement.setAttribute("href", urlProduct);
     
         return cloned;
     }
 
     return self;
 })();
+
 
 export default PageConfig;

@@ -1,4 +1,5 @@
 .btn{
+    position:relative;
     display:block;
     height:67px;
     width:100%;
@@ -7,6 +8,22 @@
    
     &__text{
         @include fluid-type(320px, 1440px, 16px, 26px);
+    }
+
+    .position{
+        position:absolute;
+        top:50%;
+        right:20px;
+        transform:translateY(-50%);
+    }
+
+    &__loader{
+        font-size:18px;
+        display:none;
+    }
+
+    &__loader.active{
+       display:inline-block;
     }
 }
 

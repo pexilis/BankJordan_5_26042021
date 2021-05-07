@@ -1,22 +1,36 @@
 const pageConfig = (() => {
     let self = {};
     self.data = {};
+    self.place = {};
 
     self.selectQuantity = document.querySelector("#quantity");
     self.selectLenses = document.querySelector("#lenses");
-    self.productImage = document.querySelector(".l-product img");
     self.nameProduct = document.querySelector(".form__header h1");
     self.priceProduct = document.querySelector(".form__header span");
     self.descriptionProduct = document.querySelector(".form__description p");
     self.totalPriceElement = document.querySelector(".form__price span");
     self.productButton = document.querySelector(".form__button");
-    
+    self.buttonLoader = document.querySelector(".btn__loader");
+    self.productContainer = document.querySelector(".l-product");
+
+    self.place["image"] = document.querySelector('div[data-place="image"]');
+
     self.init = () => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get("id");
         
         self.data["id"] = id;
+    }
+
+    self.toggleLoader = () => {
+        const buttonLoader = self.buttonLoader;
+
+        if (buttonLoader.classList.contains("active")){
+            buttonLoader.classList.remove("active");
+        }else{
+            buttonLoader.classList.add("active");
+        }
     }
 
     self.drawQuantity = max => {
@@ -28,6 +42,8 @@ const pageConfig = (() => {
             option.textContent = i;
             selectQuantity.appendChild(option);
         }
+
+        selectQuantity.classList.add("apparition");
     }
 
     self.drawLenses = data => {
@@ -40,11 +56,16 @@ const pageConfig = (() => {
             option.textContent = lense;
             selectLenses.appendChild(option);
         })
+
+        selectLenses.classList.add("apparition");
     }
 
-    self.drawImage = data => {
-        let productImage = self.productImage;
-        productImage.setAttribute("src", data);
+    self.generateImage = data => {
+        let imgElement = document.createElement("img");
+        imgElement.className = "l-product__img apparition";
+        imgElement.setAttribute("src", data);
+
+        return imgElement;
     }
 
     self.drawText = data => {
@@ -56,6 +77,10 @@ const pageConfig = (() => {
         const price = `${data.price.slice(0, data.price.length - 2)}€`;
         const description = data.description;
     
+        nameProduct.classList.add("apparition");
+        priceProduct.classList.add("apparition");
+        descriptionProduct.classList.add("apparition");
+
         nameProduct.textContent = name;
         priceProduct.textContent = price;
         descriptionProduct.textContent = description;

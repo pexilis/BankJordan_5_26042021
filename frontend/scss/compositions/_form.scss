@@ -12,15 +12,18 @@
         h1, span{
             color:map-get($baseColor, textColor);
             font-weight:400;
+            height:47px;
         }
-
+        
         h1{
-            @include fluid-type(320px, 1440px, 28px, 39px);
+            @include fluid-type(320px, 1440px, 28px, 30px);
             font-weight:100;
+            width:247px;
         }
 
         span{
             @include fluid-type(320px, 1440px, 20px, 28px);
+            width:78px;
         }
     }
 
@@ -32,12 +35,13 @@
 
     .form__price > span{
         font-size:20px;
-        color:map-get($baseColor, textColor);
+        color:map-get($baseColor, empahisColor);
         font-weight:normal;
     }
 
     .form__description{
         max-width:416px;
+        height:152px;
     }
 
     .form__group{
@@ -112,11 +116,11 @@
         }
 
         input:focus:not(:valid) + label{
-            color:red;
+            color:map-get($baseColor, alertColor);
         }
 
         input:focus:valid + label {
-            color:green;
+            color:map-get($baseColor, empahisColor);
         }
     }
 
@@ -128,10 +132,12 @@
 
 @mixin form--laptop{
     .form--product{
+          position:relative;
           width:420px;
           
         .form__description{
             order:1;
+            width:416px;
         }
 
         .form__group:nth-child(3){
@@ -153,7 +159,10 @@
         }
     
         .form__price{
-            display:none;
+            display:block;
+            position:absolute;
+            right:15px;
+            top:40px;
         }
 
         .form__description{
