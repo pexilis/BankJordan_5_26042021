@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         PageGlobal.drawQuantities(totalProducts);
     })
     .catch(error => {
-        console.log(error);
+        alert(error.error);
     });
 
 });

@@ -75,7 +75,8 @@ const pageConfig = (() => {
         const name = data.name;
         const price = `${data.price.slice(0, data.price.length - 2)}€`;
         const description = data.description;
-    
+
+        document.title = `Orinoco - Appareil Photo - ${name}`;
         nameProduct.classList.add("apparition");
         priceProduct.classList.add("apparition");
         descriptionProduct.classList.add("apparition");

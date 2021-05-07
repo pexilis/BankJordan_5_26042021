@@ -11,6 +11,7 @@ const PageConfig = (() => {
     self.command = document.querySelector("#command");
 
     self.drawInfo = (id, data) => {
+        document.title = `Orinoco - Commande - ${id}`
         self.command.textContent = `Commande : ${id}`;
         self.firstName.textContent = data.firstName;
         self.lastName.textContent = data.lastName;
