@@ -9,6 +9,13 @@ const Command = (() => {
         CommandError = error;
     }
 
+    self.getEveryDependencies = () => {
+        return {
+            CommandModel,
+            CommandError
+        };
+    }
+
     self.add = newCommand => {
         if (newCommand === undefined)
             throw {error:"UNDEFINED_ERROR"};
