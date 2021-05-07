@@ -19,7 +19,6 @@ const pageConfig = (() => {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const id = urlParams.get("id");
-        
         self.data["id"] = id;
     }
 

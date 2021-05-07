@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
             PageGlobal.drawQuantities(0);
             PageConfig.drawTotal(0);
             cardContainer.innerHTML = "";
-            window.location.replace(`/command.html?id=${orderId}`);
+            window.location.replace(`/biling.html?id=${orderId}`);
 
         }).catch(error => {
             console.log(error);
