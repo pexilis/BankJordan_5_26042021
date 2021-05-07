@@ -18,6 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateCommand.run(id).then(data => {
         PageConfig.drawInfo(id, data);
     }).catch(error => {
-
+        alert(error.error);
     });
 });

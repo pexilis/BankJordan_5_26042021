@@ -54,7 +54,7 @@ const handleChange = target => {
         PageGlobal.drawQuantities(quantity);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        console.log(error);
+        alert(error.error);
     })
 }
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         PageGlobal.drawQuantities(totalProducts);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        console.log(error);
+        alert(error.error);
     });
 
     cardContainer.onclick = e => {
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.replace(`/biling.html?id=${orderId}`);
 
         }).catch(error => {
-            console.log(error);
+            alert(error.error);
         })
     }
 });

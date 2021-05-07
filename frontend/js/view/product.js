@@ -30,15 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
         } = PageConfig;
 
     LoadPage.run({id}).then(data => {
-        const {lenses, imageUrl:urlImg} = data.selectedProduct;
+        const {lenses, imageUrl:urlImg, name} = data.selectedProduct;
         const {maxQuantitySelected:maxQuantity, totalProducts} = data;
         const elementImage = PageConfig.generateImage(urlImg);
 
         configProduct.selectedProduct = data.selectedProduct;
-        
-        console.log(elementImage);
         productContainer.replaceChild(elementImage, place["image"]);
-
 
         PageConfig.drawQuantity(maxQuantity);
         PageConfig.drawLenses(lenses);
@@ -47,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         configProduct.quantity = selectQuantity.value;
     }).catch(error => {
-        console.log(error);
+        alert(error.error);
     })
 
     selectQuantity.addEventListener("change", e => {
@@ -60,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ChangeQuantity.page({quantity,price}).then(data => {
             PageConfig.drawTotalPrice(data);
         }).catch(error => {
-            console.log(error);
+            alert(error.error);
         })
     });
 
@@ -77,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 configProduct.quantity = 1;
                 PageGlobal.drawQuantities(totalProducts);
             }).catch(error => {
-                console.log(error);
+                alert(error.error);
             })
     });
 });
