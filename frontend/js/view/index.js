@@ -1,26 +1,18 @@
-import Global from "../config/global.config.js";
-import LocalStorageAPI from "../utils/localStorageAPI.js";
-import ConfigValidator from "../config/validator.config.js";
-import RequestFactory from "../config/request.config.js";
-import "../config/localstorage.config.js";
+import "../loaders/global.loader.js";
 import PageConfig from "../config/view/index.config.js";
+import PageGlobal from "../config/view/global.config.js";
 
-import Cart from "../controllers/cart.js";
-import Product from "../controllers/product.js";
-
-import BuisnessLoad from "../business/LoadPage.js";
-
-Cart.init(new LocalStorageAPI("cart-storage"), 
-          new LocalStorageAPI("command-storage"), 
-          ConfigValidator, 
-          RequestFactory
-);
-
-Product.init(RequestFactory, ConfigValidator);
-BuisnessLoad.init(Product, Cart);
+(() => {
+       const CartModel = new LocalStorageAPI("cart-storage");
+       CartError.init(ConfigValidator, CartModel);
+       Cart.init(CartModel, RequestFactory, CartError);
+       Product.init(RequestFactory, ConfigValidator, CartError);
+       CartCalculate.init(Cart);
+       LoadPage.init(Product, Cart, CartCalculate);
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
-    BuisnessLoad.run()
+    LoadPage.run()
     .then(data => {
         const serverProducts = data.serverProducts;
         const totalProducts = data.totalProducts;
@@ -32,10 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
             cardContainer.appendChild(card);
         })
 
-        PageConfig.drawQuantities(totalProducts);
+        PageGlobal.drawQuantities(totalProducts);
     })
     .catch(error => {
-        alert(error.error);
+        console.log(error);
     });
 
 });
