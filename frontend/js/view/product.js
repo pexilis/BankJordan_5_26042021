@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 const totalProducts = data.totalProducts;
                 configProduct.quantity = 1;
                 PageGlobal.drawQuantities(totalProducts);
+
+                PageGlobal.startAnimation(800, buttonLoader);
             }).catch(error => {
                 alert(error.error);
             })
