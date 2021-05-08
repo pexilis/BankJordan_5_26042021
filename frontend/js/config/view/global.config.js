@@ -12,6 +12,14 @@ const PageGlobal = (() => {
         }
     }
 
+    self.startAnimation = (time, element) => {
+        element.classList.add("active");
+
+        setTimeout(() => {
+            element.classList.remove("active");
+        }, time);
+    }
+
     return self;
 })();
 

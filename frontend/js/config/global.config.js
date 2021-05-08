@@ -1,11 +1,10 @@
 const Global = (() => {
     let self = {};
 
-    self.protocol = "https";
-    self.hostname = "orinoco-back.herokuapp.com";
+    self.protocol = "http";
+    self.hostname = "localhost:3000";
     self.typeData = "cameras";
-    self.imgName = "vcam";
-    
+
     return self;
 })();
 

@@ -8,6 +8,26 @@ const PageConfig = (() => {
     self.totalElement = document.querySelector(".l-cart__total");
     self.templateCard = document.querySelector("#cardTemplate");
     self.counterElement = document.querySelector(".l-header__counter");
+    self.buttonLoader = document.querySelector(".btn__loader");
+
+
+    const handleChange = target => {
+        const currentCard = DOMApi.findParentNode(target, "card--cart");
+        const selectElement = currentCard.querySelector("select");
+    
+        const id = currentCard.getAttribute("data-id");
+        const quantity = selectElement.value;
+    
+        ChangeQuantity.cart({id, quantity}).then(data => {
+            const {updatedPrice, totalPrice, quantity} = data;
+    
+            self.drawPrice(currentCard, updatedPrice);
+            self.drawQuantities(quantity);
+            self.drawTotal(totalPrice);
+        }).catch(error => {
+            alert(error.error);
+        })
+    }
 
     // Generator 
     self.generateCard = (data,template) => {
@@ -34,7 +54,7 @@ const PageConfig = (() => {
         }
 
         selectElement.value = quantity;
-        
+        selectElement.onchange = e => handleChange(e.target);
         return cloned;
     }
 
@@ -48,7 +68,7 @@ const PageConfig = (() => {
     
         if (totalProducts > 0){
             self.counterElement.textContent = totalProducts;
-            self.counterElement.style.display = "block";
+            self.counterElement.style.display = "flex";
         }
     }
 
