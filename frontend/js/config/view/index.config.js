@@ -9,7 +9,7 @@ const PageConfig = (() => {
         const cloned = temp.content.cloneNode(true);
     
         const formatedPrice = `${data.price.slice(0, data.price.length - 2)}€`;
-        const urlProduct = `/product.html?id=${data._id}`;
+        const urlProduct = `./product.html?id=${data._id}`;
         
         const element = cloned.querySelector("a");
         const titleElement = cloned.querySelector(".card__header h2");
