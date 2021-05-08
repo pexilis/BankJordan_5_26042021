@@ -32,5 +32,4 @@ $darkenColor : darken(map-get($baseColor, empahisColor), 15);
 .btn--green{
     background-color:map-get($baseColor, empahisColor);
     color:white;
-    @include fillVertical($darkenColor, 0.2s, ease-in-out)
 }
