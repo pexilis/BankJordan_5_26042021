@@ -22,16 +22,6 @@ const pageConfig = (() => {
         self.data["id"] = id;
     }
 
-    self.toggleLoader = () => {
-        const buttonLoader = self.buttonLoader;
-
-        if (buttonLoader.classList.contains("active")){
-            buttonLoader.classList.remove("active");
-        }else{
-            buttonLoader.classList.add("active");
-        }
-    }
-
     self.drawQuantity = max => {
         let selectQuantity = self.selectQuantity;
         selectQuantity.innerHTML = "";
