@@ -59,21 +59,27 @@ const handleChange = target => {
 }
 
 const {cardContainer, formButton, totalElement, templateCard, formElement} = PageConfig;
+const {place:places} = PageGlobal;
 
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.run().then(data => {
-        const {clientProducts, totalProducts, totalPrice} = data;
-        const places = PageGlobal.place;
+    LoadPage.header().then(data => {
+        const {totalProducts} = data;
+        PageConfig.drawQuantities(totalProducts);
+    }).catch(error => {
+        console.log(error);
+    });
 
+    LoadPage.cart().then(data => {
+        const {clientProducts, totalPrice} = data;
+        
         clientProducts.map((product,index) => {
             const card = PageConfig.generateCard(product, templateCard);
             cardContainer.replaceChild(card, places[index]);
         });
 
-        PageGlobal.drawQuantities(totalProducts);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     });
 
     cardContainer.onclick = e => {
