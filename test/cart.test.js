@@ -86,20 +86,6 @@ describe("Add article to cart", () => {
         expect(thrownError).toEqual({error:"FORMAT_ERROR"});
     });
 
-    it("should throw an error when the imageURL isn't proper format", () => {
-        let thrownError;
-        try{
-            let dummyArticle = Utils.generateArticle();
-            dummyArticle.imageUrl = "fake.com";
-            localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
-        }catch(error){
-            thrownError = error;
-        }
-
-        expect(thrownError).toEqual({error:"FORMAT_ERROR"});
-    });
-
     it("should throw an error when the article isn't proper format", () => {
         let thrownError;
         try{
