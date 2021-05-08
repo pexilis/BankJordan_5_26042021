@@ -16,67 +16,75 @@ import PageGlobal from "../config/view/global.config.js";
     ChangeQuantity.init(Cart, CartCalculate);
 })();
 
-document.addEventListener("DOMContentLoaded", () => {
-    let configProduct = PageConfig.data;
-    let {id} = configProduct;
+let configProduct = PageConfig.data;
+let {id} = configProduct;
 
-    let {
+let {
             selectQuantity, 
             productButton,                
             counterElement,
             buttonLoader,
             place,
             productContainer 
-        } = PageConfig;
+} = PageConfig;
 
-    LoadPage.run({id}).then(data => {
-        const {lenses, imageUrl:urlImg, name} = data.selectedProduct;
-        const {maxQuantitySelected:maxQuantity, totalProducts} = data;
-        const elementImage = PageConfig.generateImage(urlImg);
+document.addEventListener("DOMContentLoaded", () => {
+    LoadPage.header().then(data => {
+        const {totalProducts} = data;
+        PageGlobal.drawQuantities(totalProducts);
+    });
 
+    LoadPage.article(id).then(data => {
+        const {
+               selectedProduct, 
+               maxQuantitySelected:maxQuantity,
+               totalProducts
+        } = data;
+        const {
+                lenses, 
+                imageUrl, 
+                name
+        } = selectedProduct;
+        
         configProduct.selectedProduct = data.selectedProduct;
-        productContainer.replaceChild(elementImage, place["image"]);
 
+        PageConfig.drawImage(imageUrl);
         PageConfig.drawQuantity(maxQuantity);
         PageConfig.drawLenses(lenses);
-        PageConfig.drawText(data.selectedProduct);
-        PageGlobal.drawQuantities(totalProducts);   
-
-        configProduct.quantity = selectQuantity.value;
+        PageConfig.drawInfos(selectedProduct);
+    
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     })
 
     selectQuantity.addEventListener("change", e => {
-        const target = e.target;
-        const quantity = target.value;
-        const price = configProduct.selectedProduct.price;
+        const {target} = e;
+        const {value} = target;
+        const {price} = configProduct.selectedProduct;
     
-        configProduct.quantity = quantity;
+        configProduct.quantity = value;
 
-        ChangeQuantity.page({quantity,price}).then(data => {
+        ChangeQuantity.page({quantity:value,price}).then(data => {
             PageConfig.drawTotalPrice(data);
         }).catch(error => {
-            alert(error.error);
+            console.log(error);
         })
     });
 
     productButton.addEventListener("click", e => {
         e.preventDefault();
-    
-        const quantity = configProduct.quantity;
+        const {quantity} = configProduct;
         configProduct.selectedProduct.quantity = quantity;
-        
-       
-            AddArticle.run(configProduct.selectedProduct).then(data => {
-                PageConfig.drawQuantity(data.maxQuantitySelected);
-                const totalProducts = data.totalProducts;
-                configProduct.quantity = 1;
-                PageGlobal.drawQuantities(totalProducts);
+        configProduct.quantity = 1;
 
-                PageGlobal.startAnimation(800, buttonLoader);
-            }).catch(error => {
-                alert(error.error);
-            })
+        AddArticle.run(configProduct.selectedProduct).then(data => {
+            const {totalProducts, maxQuantitySelected} = data;
+
+            PageConfig.drawQuantity(maxQuantitySelected);
+            PageGlobal.drawQuantities(totalProducts);
+            PageGlobal.startAnimation(1200, buttonLoader);
+        }).catch(error => {
+            console.log(error);
+        })
     });
 });

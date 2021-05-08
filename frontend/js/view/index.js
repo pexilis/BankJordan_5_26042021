@@ -3,6 +3,7 @@ import "../../scss/index.scss";
 import "../loaders/global.loader.js";
 import PageConfig from "../config/view/index.config.js";
 import PageGlobal from "../config/view/global.config.js";
+import LoadPage from "../services/LoadPage";
 
 (() => {
        const CartModel = new LocalStorageAPI("cart-storage");
@@ -13,22 +14,21 @@ import PageGlobal from "../config/view/global.config.js";
        LoadPage.init(Product, Cart, CartCalculate);
 })();
 
+const {templateCardElement, cardContainer} = PageConfig;
+const {place} = PageGlobal;
+
+
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.run()
-    .then(data => {
-        const {serverProducts, totalProducts} = data;
-        const {templateCardElement, cardContainer} = PageConfig;
-        const places = PageGlobal.place;
-
-        serverProducts.forEach((element, index) => {
-            const card = PageConfig.generateCard(element, index, templateCardElement);
-            cardContainer.replaceChild(card, places[index]);
-        })
-
+    LoadPage.header().then(data => {
+        const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
     })
-    .catch(error => {
-        alert(error.error);
-    });
 
+    .then(data => {
+        const {serverProducts} = data;
+        PageConfig.drawCards(serverProducts, place);         
+    })
+    .catch(error => {
+        console.log(error);
+    });
 });

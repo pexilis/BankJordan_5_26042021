@@ -26,6 +26,20 @@ const PageConfig = (() => {
         return cloned;
     }
 
+    self.drawCards = (element, place) => {
+        const {templateCardElement, cardContainer} = self;
+        element.forEach((element, index) => {
+            const card = PageConfig.generateCard(element, index, templateCardElement);
+
+            if (place[index]){
+                cardContainer.replaceChild(card, place[index]);
+                return;
+            }
+                
+            CardContainer.appendChild(card);
+        });
+    }
+
     return self;
 })();
 
