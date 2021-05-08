@@ -1,3 +1,5 @@
+import Global from "../config/global.config.js";
+
 const LoadPage = (() => {
     let self = {};
     let Cart = null;
@@ -10,43 +12,51 @@ const LoadPage = (() => {
         CartCalculate = calcul;
     }
 
-    self.run = async(opts) => {
-        const serverProducts = await Product.fetchEvery();
-        let clientProducts = await Cart.listArticles();
-        const serverUUIDS = serverProducts.map(product => product._id);
-
-        clientProducts.filter(product => serverUUIDS.includes(product._id))
-        .map(product => {
-            const id = product._id;
-            let serverProduct = serverProducts.find(product => product._id === id);
-            serverProduct.quantity = product.quantity;
-            Cart.setArticleById(id, serverProduct);
-        });
-
-        const totalProducts = CartCalculate.quantities();
-        const selectedProduct = serverProducts.find(product => product._id === opts?.id);
-        const minQuantitySelected = 1;
-        let maxQuantitySelected;
-
-        if (selectedProduct?.quantity){
-            maxQuantitySelected = 99 - Number.parseInt(selectedProduct?.quantity);
-        }else{
-            maxQuantitySelected = 99;
-        }
-            
-        clientProducts = await Cart.listArticles();
+    self.cart = async() => {
+        const clientProducts = await Cart.listArticles();
         const totalPrice = CartCalculate.totalPrices();
 
         return {
-           clientProducts,
-           serverProducts,
-           totalProducts,
-           selectedProduct,
-           minQuantitySelected,
-           maxQuantitySelected,
-           totalPrice
-        }
+            clientProducts,
+            totalPrice
+        };
     }
+
+    self.index = async() => {
+        const serverProducts = await Product.fetchEvery();
+        return {
+            serverProducts
+        };
+    }
+
+    self.header = async() => {
+        const totalProducts = CartCalculate.quantities();
+    
+        return {
+            totalProducts
+        };
+    }
+
+    self.article = async(id) => {
+        const selectedProduct = await Product.fetchById(id);
+        const selectedProductCart = await Cart.getArticleById(id);
+        let maxQuantitySelected;
+        let cartQuantity;
+        
+
+        if (selectedProductCart){
+            cartQuantity = Number.parseInt(selectedProductCart.quantity);
+            maxQuantitySelected = Global.maxQuantityCart - cartQuantity;
+        }else{
+            maxQuantitySelected = Global.maxQuantityCart
+        }
+
+        return {
+            maxQuantitySelected,
+            selectedProduct,
+        };
+    }
+
     return self;
 })();
 
