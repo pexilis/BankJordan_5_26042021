@@ -91,8 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (isClose)
             handleClose(target);
-        if (isChange)
-            handleChange(target);
+       
     }
 
     formButton.onclick = e => {
@@ -109,12 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         SubmitCart.run(opts).then(data => {
             const {orderId} = data.result;
-
             PageGlobal.drawQuantities(0);
             PageConfig.drawTotal(0);
             cardContainer.innerHTML = "";
-            window.location.replace(`/biling.html?id=${orderId}`);
-
+            window.location.replace(`./biling.html?id=${orderId}`);
         }).catch(error => {
             alert(error.error);
         })

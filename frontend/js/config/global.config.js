@@ -4,8 +4,7 @@ const Global = (() => {
     self.protocol = "https";
     self.hostname = "orinoco-back.herokuapp.com";
     self.typeData = "cameras";
-    self.imgName = "vcam";
-    
+
     return self;
 })();
 
