@@ -12,14 +12,14 @@ const CartCalculate = (() => {
         const arrArticle = CartModel.getArray();
         const paidPrices = [];
 
+        if (arrArticle.length === 0)
+            return 0;
+            
         arrArticle.map(article => {
             CartError.errorFormat(article);
             const paidPrice = Number.parseInt(article.calculatePrice, 10);
             paidPrices.push(paidPrice);
         });
-
-        if (arrArticle.length === 0)
-            return 0;
 
         return paidPrices.reduce((old, next) => old + next);
     }
