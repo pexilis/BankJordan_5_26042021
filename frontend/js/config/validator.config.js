@@ -13,7 +13,6 @@ const ProductRegex = () => {
     Validator.addRegex("uuid", "^[0-9a-z]{24}$");
     Validator.addRegex("quantity", "^[0-9]{1,2}$");
     Validator.addRegex("price", "^[0-9]{1,}00$");
-    Validator.addRegex("url", `^${Global.protocol}:\/\/${Global.hostname}:${Global.port}\/images\/${Global.imgName}_[0-9]{1,}\.jpg$`);
 }
 
 

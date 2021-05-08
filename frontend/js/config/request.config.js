@@ -18,9 +18,9 @@ const RequestFactory = (() => {
 })();
 
 (() => {
-    RequestFactory.add("submitCart", new JSONBodyRequest("POST", `${Global.protocol}://${Global.hostname}:${Global.port}/api/${Global.typeData}/order`));
-    RequestFactory.add("getProducts", new JSONUrlRequest("GET", `${Global.protocol}://${Global.hostname}:${Global.port}/api/${Global.typeData}`));
-    RequestFactory.add("getProductById", new JSONUrlRequest("GET", `${Global.protocol}://${Global.hostname}:${Global.port}/api/${Global.typeData}/{id}`));
+    RequestFactory.add("submitCart", new JSONBodyRequest("POST", `${Global.protocol}://${Global.hostname}/api/${Global.typeData}/order`));
+    RequestFactory.add("getProducts", new JSONUrlRequest("GET", `${Global.protocol}://${Global.hostname}/api/${Global.typeData}`));
+    RequestFactory.add("getProductById", new JSONUrlRequest("GET", `${Global.protocol}://${Global.hostname}/api/${Global.typeData}/{id}`));
 })();
 
 export default RequestFactory;

@@ -12,8 +12,7 @@ const CartError = (() => {
         const objCheck = Validator.checkRegex({
             "uuid":article._id,
             "quantity":article.quantity,
-            "price":article.price,
-            "url":article.imageUrl,
+            "price":article.price
         });
 
         if (objCheck.valid === false) 
