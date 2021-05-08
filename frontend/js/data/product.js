@@ -21,8 +21,6 @@ const Product = (() => {
         CartError.errorID(id);
         let request = RequestFactory.get("getProductById");
         let jsonResponse = request.send({id});
-
-        jsonResponse.price = jsonResponse.price.toString();
         return jsonResponse;
     }
 
