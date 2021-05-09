@@ -1,30 +1,25 @@
-const Product = (() => {
-    let self = {};
-    let RequestFactory = null; 
-    let Validator = null;
-    let CartError = null;
-
-
-    self.init = (request, validator, error) => {
-        RequestFactory = request;
-        Validator = validator;
-        CartError = error;
+class Product {
+    constructor(request, validator, error) {
+        this.RequestFactory = request;
+        this.Validator = validator;
+        this.CartError = error;
     }
 
-    self.fetchEvery = async() => {
+    
+    async fetchEvery() {
+        const {RequestFactory} = this;
         let request = RequestFactory.get("getProducts");
-        let jsonResponse = request.send();
+        let jsonResponse = await request.send();
         return jsonResponse;
     }
 
-    self.fetchById = async(id) => {
+    async fetchById(id) {
+        const {CartError} = this;
         CartError.errorID(id);
         let request = RequestFactory.get("getProductById");
-        let jsonResponse = request.send({id});
+        let jsonResponse = await request.send({id});
         return jsonResponse;
     }
-
-    return self;
-})();
+}
 
 export default Product;

@@ -1,17 +1,12 @@
-const Cart = (() => {
-    let self = {};
-    self.CartModel = null;
-    self.RequestFactory = null;
-    self.CartError = null;
-
-    self.init = (model, request, error) => {
-        self.CartModel = model;
-        self.RequestFactory = request;
-        self.CartError = error;
+class Cart{
+    constructor(model, request, error) {
+        this.CartModel = model;
+        this.RequestFactory = request;
+        this.CartError = error;
     }
 
-    self.getEveryDependencies = () => {
-        const {CartModel, RequestFactory, CartError} = self;
+    getEveryDependencies() {
+        const {CartModel, RequestFactory, CartError} = this;
 
         return {
             CartModel,
@@ -20,36 +15,36 @@ const Cart = (() => {
         };
     }
 
-    self.listArticles = async() => {
-        const {CartError, CartModel} = self.getEveryDependencies();
+    async listArticles() {
+        const {CartError, CartModel} = this.getEveryDependencies();
         let result = CartModel.getArray();
         result.map(article => CartError.errorFormat(article));
         return Promise.resolve(result);
     }
 
-    self.clearCart = _ => {
-        const {CartModel} = self.getEveryDependencies();
+    clearCart() {
+        const {CartModel} = this.getEveryDependencies();
         CartModel.clearArray();
     }
 
-    self.addArticle = article => {
-        const {CartModel, CartError} = self.getEveryDependencies();
+    addArticle(article) {
+        const {CartModel, CartError} = this.getEveryDependencies();
 
         CartError.errorFormat(article);
         const old = CartModel.getById(article._id);
         
         if (old){
-            self.updateArticleWithNewQuantity(old, article);
+            this.updateArticleWithNewQuantity(old, article);
         }else{
-            self.updatePaidPrice(article);
+            this.updatePaidPrice(article);
             CartModel.addItem(article);
         }
 
         return CartModel.getById(article._id);
     }
 
-    self.removeArticle = (id) => {
-        const {CartModel, CartError} = self.getEveryDependencies();
+    removeArticle(id) {
+        const {CartModel, CartError} = this.getEveryDependencies();
 
         CartError.errorID(id);
         let article = CartModel.getById(id);
@@ -58,28 +53,26 @@ const Cart = (() => {
         return article;
     }
 
-    self.setArticleById = (id, article) => {
-        const {CartModel, CartError} = self.getEveryDependencies();
-
+    setArticleById(id, article) {
+        const {CartModel, CartError} = this.getEveryDependencies();
+        
         CartError.errorID(id);
         CartError.errorFormat(article);
-
-        
         CartModel.removeItem(id);
-        self.addArticle(article);
+        this.addArticle(article);
 
         return article;
     };
 
-    self.getArticleById = id => {
-        const {CartModel, CartError} = self.getEveryDependencies();
+    getArticleById(id) {
+        const {CartModel, CartError} = this.getEveryDependencies();
 
         CartError.errorID(id);
         return CartModel.getById(id);
     }
 
-    self.getEveryProductsId = async() => {
-        let articles = await Cart.listArticles();
+    async getEveryProductsId() {
+        let articles = await this.listArticles();
         let products = [];
 
         articles.map(article => {
@@ -93,15 +86,15 @@ const Cart = (() => {
         return products;
     }
 
-    self.updatePaidPrice = article => {
+    updatePaidPrice(article) {
         const quantity = Number.parseInt(article.quantity, 10);
         const price = Number.parseInt(article.price.slice(0, -2));
         const updated_price = quantity * price;
         article.calculatePrice = updated_price.toString();
     }
 
-    self.updateArticleWithNewQuantity = (old, article) => {
-        const {CartModel, CartError} = self.getEveryDependencies();
+    updateArticleWithNewQuantity(old, article) {
+        const {CartModel, CartError} = this.getEveryDependencies();
 
         let new_quantity = Number.parseInt(old.quantity) +
                              Number.parseInt(article.quantity);
@@ -109,7 +102,7 @@ const Cart = (() => {
         new_quantity = new_quantity.toString();
 
         article.quantity = new_quantity;
-        self.updatePaidPrice(article);
+        this.updatePaidPrice(article);
 
         try{
             CartError.errorFormat(article);
@@ -119,8 +112,7 @@ const Cart = (() => {
 
         CartModel.setById(article._id, article);
     }
+}
 
-    return self;
-})();
 
 export default Cart;

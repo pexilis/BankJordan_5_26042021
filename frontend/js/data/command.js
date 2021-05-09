@@ -1,22 +1,19 @@
-const Command = (() => {
-    let self = {};
-    let CommandModel = null;
-    let CommandError = null;
-
-    
-    self.init = (model, error) => {
-        CommandModel = model;
-        CommandError = error;
+class Command{
+    constructor(model, error) {
+        this.CommandModel = model;
+        this.CommandError = error;
     }
 
-    self.getEveryDependencies = () => {
+    getEveryDependencies() {
+        const {CommandModel, CommandError} = this;
         return {
             CommandModel,
             CommandError
         };
     }
 
-    self.add = newCommand => {
+    add(newCommand) {
+        const {CommandModel} = this;
         if (newCommand === undefined)
             throw {error:"UNDEFINED_ERROR"};
 
@@ -24,12 +21,10 @@ const Command = (() => {
         CommandModel.addItem(newCommand);
     }
 
-    self.get = id => {
+    get(id) {
+        const {CommandModel, CommandError} = this;
         CommandError.errorUUID(id);
         return CommandModel.getById(id);
     }
-
-    return self;
-})();
-
+}
 export default Command;
