@@ -1,23 +1,20 @@
-const GenerateCommand = (() => {
-    let self = {};
-    let Command = null;
-    let CommandCalculate = null;
-   
-    self.init = (command, calcul) => {
-        Command = command;
-        CommandCalculate = calcul;
+class GenerateCommand {
+    constructor(command, calcul) {
+        this.Command = command;
+        this.CommandCalculate = calcul;
     }
 
-    self.run = async(id) => {
+    async run(id) {
+        const {Command, CommandCalculate} = this;
         const currentCommand = Command.get(id);
         const contact = currentCommand.contact;
-
-        const {firstName, 
-               lastName, 
-               city,
-               address,
-               email, 
-               } = contact;
+        const {
+            firstName, 
+            lastName, 
+            city,
+            address,
+            email, 
+        } = contact;
         
         const totalPrice = CommandCalculate.totalPrice(id);
 
@@ -30,8 +27,6 @@ const GenerateCommand = (() => {
             totalPrice
         };
     }
-
-    return self;
-})();
+}
 
 export default GenerateCommand;

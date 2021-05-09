@@ -1,18 +1,13 @@
 import Global from "../config/global.config.js";
-
-const LoadPage = (() => {
-    let self = {};
-    let Cart = null;
-    let CartCalculate = null;
-    let Product = null;
-
-    self.init = (product, cart, calcul) => {
-        Cart = cart;
-        Product = product;
-        CartCalculate = calcul;
+class LoadPage {
+    constructor(product, cart, calcul) {
+        this.Cart = cart;
+        this.Product = product;
+        this.CartCalculate = calcul;
     }
 
-    self.cart = async() => {
+    async cart() {
+        const {Cart, CartCalculate} = this;
         const clientProducts = await Cart.listArticles();
         const totalPrice = CartCalculate.totalPrices();
 
@@ -22,14 +17,16 @@ const LoadPage = (() => {
         };
     }
 
-    self.index = async() => {
+    async index() {
+        const {Product} = this;
         const serverProducts = await Product.fetchEvery();
         return {
             serverProducts
         };
     }
 
-    self.header = async() => {
+    async header() {
+        const {CartCalculate} = this;
         const totalProducts = CartCalculate.quantities();
     
         return {
@@ -37,7 +34,8 @@ const LoadPage = (() => {
         };
     }
 
-    self.article = async(id) => {
+    async article(id) {
+        const {Product, Cart} = this;
         const selectedProduct = await Product.fetchById(id);
         const selectedProductCart = await Cart.getArticleById(id);
         let maxQuantitySelected;
@@ -57,7 +55,6 @@ const LoadPage = (() => {
         };
     }
 
-    return self;
-})();
+}
 
 export default LoadPage
