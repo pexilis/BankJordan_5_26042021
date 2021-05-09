@@ -1,13 +1,10 @@
-const CartSubmit = (() => {
-    let self = {};
-
-    let Cart = null;
-
-    self.init = cart => {
-        Cart = cart;
+class CartSubmit {
+    constructor(cart) {
+        this.Cart = cart;
     }
 
-    self.submit = async(submitForm) => {
+    async submit(submitForm) {
+        const {Cart} = this;
         const {CartError, RequestFactory, CartModel} = Cart.getEveryDependencies();
 
         CartError.errorSubmit(submitForm);
@@ -23,8 +20,6 @@ const CartSubmit = (() => {
 
         return result;
     }
-
-    return self;
-})();
+}
 
 export default CartSubmit;
