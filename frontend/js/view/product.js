@@ -4,17 +4,17 @@ import "../loaders/global.loader.js";
 import PageConfig from "../config/view/product.config.js";
 import PageGlobal from "../config/view/global.config.js";
 
-(() => {
-    const CartModel = new LocalStorageAPI("cart-storage");
-    PageConfig.init();
-    CartError.init(ConfigValidator, CartModel);
-    Cart.init(CartModel, RequestFactory, CartError);
-    Product.init(RequestFactory, ConfigValidator, CartError);
-    CartCalculate.init(Cart);
-    LoadPage.init(Product, Cart, CartCalculate);
-    AddArticle.init(Cart, CartCalculate);
-    ChangeQuantity.init(Cart, CartCalculate);
-})();
+PageConfig.init();
+
+const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart);
+
+const product = new Product(RequestFactory, ConfigValidator, cartError);
+const loadPage = new LoadPage(product, cart, cartCalculate);
+const addArticle = new AddArticle(cart, cartCalculate);
+const changeQuantity = new ChangeQuantity(cart, cartCalculate);
 
 let configProduct = PageConfig.data;
 let {id} = configProduct;
@@ -29,12 +29,12 @@ let {
 } = PageConfig;
 
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.header().then(data => {
+    loadPage.header().then(data => {
         const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
     });
 
-    LoadPage.article(id).then(data => {
+    loadPage.article(id).then(data => {
         const {
                selectedProduct, 
                maxQuantitySelected:maxQuantity,
@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
         PageConfig.drawInfos(selectedProduct);
     
     }).catch(error => {
+        console.log("LOL");
         console.log(error);
     })
 
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
         configProduct.quantity = value;
 
-        ChangeQuantity.page({quantity:value,price}).then(data => {
+        changeQuantity.page({quantity:value,price}).then(data => {
             PageConfig.drawTotalPrice(data);
         }).catch(error => {
             console.log(error);
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         configProduct.selectedProduct.quantity = quantity;
         configProduct.quantity = 1;
 
-        AddArticle.run(configProduct.selectedProduct).then(data => {
+        addArticle.run(configProduct.selectedProduct).then(data => {
             const {totalProducts, maxQuantitySelected} = data;
 
             PageConfig.drawQuantity(maxQuantitySelected);

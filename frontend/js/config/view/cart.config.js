@@ -10,26 +10,26 @@ const PageConfig = (() => {
     self.counterElement = document.querySelector(".l-header__counter");
     self.buttonLoader = document.querySelector(".btn__loader");
 
+    // Generator 
 
-    const handleChange = target => {
+    const handleChange = (target) => {
         const currentCard = DOMApi.findParentNode(target, "card--cart");
         const selectElement = currentCard.querySelector("select");
     
         const id = currentCard.getAttribute("data-id");
         const quantity = selectElement.value;
     
-        ChangeQuantity.cart({id, quantity}).then(data => {
+        changeQuantity.cart({id, quantity}).then(data => {
             const {updatedPrice, totalPrice, quantity} = data;
     
-            self.drawPrice(currentCard, updatedPrice);
-            self.drawQuantities(quantity);
-            self.drawTotal(totalPrice);
+            PageConfig.drawPrice(currentCard, updatedPrice);
+            PageConfig.drawQuantities(quantity);
+            PageConfig.drawTotal(totalPrice);
         }).catch(error => {
-            alert(error.error);
+            alert(error);
         })
     }
 
-    // Generator 
     self.generateCard = (data,template) => {
         const {name, calculatePrice, imageUrl, quantity, _id} = data;
         const temp = template;
@@ -54,7 +54,7 @@ const PageConfig = (() => {
         }
 
         selectElement.value = quantity;
-        selectElement.onchange = e => handleChange(e.target);
+        
         return cloned;
     }
 

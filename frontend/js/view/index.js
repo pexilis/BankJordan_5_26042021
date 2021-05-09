@@ -3,28 +3,24 @@ import "../../scss/index.scss";
 import "../loaders/global.loader.js";
 import PageConfig from "../config/view/index.config.js";
 import PageGlobal from "../config/view/global.config.js";
-import LoadPage from "../services/LoadPage";
 
-(() => {
-       const CartModel = new LocalStorageAPI("cart-storage");
-       CartError.init(ConfigValidator, CartModel);
-       Cart.init(CartModel, RequestFactory, CartError);
-       Product.init(RequestFactory, ConfigValidator, CartError);
-       CartCalculate.init(Cart);
-       LoadPage.init(Product, Cart, CartCalculate);
-})();
-
+const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart, cartError);
+const product = new Product(RequestFactory, ConfigValidator, cartError);
+const loadPage = new LoadPage(product, cart, cartCalculate);
 const {templateCardElement, cardContainer} = PageConfig;
 const {place} = PageGlobal;
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.header().then(data => {
+    loadPage.header().then(data => {
         const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
     })
 
-    .then(data => {
+    loadPage.index().then(data => {
         const {serverProducts} = data;
         PageConfig.drawCards(serverProducts, place);         
     })

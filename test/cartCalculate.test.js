@@ -9,10 +9,9 @@ import CartCalculate from "../frontend/js/actions/cartCalculate.js"
 import * as Utils from "./utils.js";
 
 const cartModel = new LocalStorageAPI("cart-storage");
-
-CartError.init(ConfigValidator, cartModel);
-Cart.init(cartModel, RequestFactory, CartError);
-CartCalculate.init(Cart);
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart);
 
 describe("Calculate total quantity", () => {
     it("should throw error if only one of the items is invalid", () => {
@@ -22,7 +21,7 @@ describe("Calculate total quantity", () => {
 
         try{
             localStorage.setItem("cart-storage", JSON.stringify(arrItem));
-            let total = CartCalculate.quantities();
+            let total = cartCalculate.quantities();
         }catch(e){
             errorThrown = e;
         }
@@ -33,13 +32,13 @@ describe("Calculate total quantity", () => {
     it("should return total quantity when everything is ok", () => {
         let arrItem = Utils.generateArrItem();
         localStorage.setItem("cart-storage", JSON.stringify(arrItem));
-        const totalPrice = CartCalculate.quantities();
+        const totalPrice = cartCalculate.quantities();
         expect(totalPrice).toBe(181);
     });
 
     it("should return 0 for empty cart", () => {
         localStorage.setItem("cart-storage", "[]");
-        expect(CartCalculate.quantities()).toEqual(0);
+        expect(cartCalculate.quantities()).toEqual(0);
     });
 });
 
@@ -85,7 +84,7 @@ describe("Calculate total price", () => {
         localStorage.setItem("cart-storage", JSON.stringify(arrItem));
 
         try{
-            let total = CartCalculate.totalPrices();
+            let total = cartCalculate.totalPrices();
         }catch(e){
             errorThrown = e;
         }
@@ -122,12 +121,12 @@ describe("Calculate total price", () => {
         }
 
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(itemOne);
-        Cart.addArticle(itemTwo);
-        Cart.addArticle(itemThree);
-        Cart.addArticle(itemThree);
+        cart.addArticle(itemOne);
+        cart.addArticle(itemTwo);
+        cart.addArticle(itemThree);
+        cart.addArticle(itemThree);
 
-        const total = CartCalculate.totalPrices();
+        const total = cartCalculate.totalPrices();
         expect(total).toEqual(20*12 + 30*125 + 80*1205);
         
 

@@ -1,12 +1,10 @@
-const CartCalculate = (() => {
-    let self = {};
-    let Cart = null;
-
-    self.init = cart => {
-        Cart = cart;
+class CartCalculate {
+    constructor(cart) {
+        this.Cart = cart;
     }
 
-    self.totalPrices = _ => {
+    totalPrices() {
+        const {Cart} = this;
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
@@ -24,7 +22,8 @@ const CartCalculate = (() => {
         return paidPrices.reduce((old, next) => old + next);
     }
 
-    self.quantities = _ => {
+    quantities (){
+        const {Cart} = this;
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
@@ -41,8 +40,6 @@ const CartCalculate = (() => {
 
         return quantities.reduce((old, curr) => old + curr);
     }
-
-    return self;
-})();
+}
 
 export default CartCalculate;

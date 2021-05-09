@@ -9,10 +9,9 @@ import CartSubmit from "../frontend/js/actions/cartSubmit.js";
 import * as Utils from "./utils.js";
 
 const cartModel = new LocalStorageAPI("cart-storage");
-
-CartError.init(ConfigValidator, cartModel);
-Cart.init(cartModel, RequestFactory, CartError);
-CartSubmit.init(Cart);
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartSubmit = new CartSubmit(cart);
 
 
 describe("Submit cart to server", () => {
@@ -20,35 +19,35 @@ describe("Submit cart to server", () => {
         expect.assertions(1);
         let submitForm = Utils.generateDummyForm();
         submitForm.firstName = "!Arnaud*5"
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 
     it("should send an error when lastName isn't valid", () => {
         expect.assertions(1);
         let submitForm = Utils.generateDummyForm();
         submitForm.lastName = "!Arno"
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 
     it("should send an error when city isn't valid", () => {
         expect.assertions(1);
         let submitForm = Utils.generateDummyForm();
         submitForm.city = "!Paris"
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 
     it("should send an error when address isn't valid", () => {
         expect.assertions(1);
         let submitForm = Utils.generateDummyForm();
         submitForm.address = "rue des tomates"
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 
     it("should send an error when email isn't valid", () => {
         expect.assertions(1);
         let submitForm = Utils.generateDummyForm();
         submitForm.email = "fakemeil@ttt"
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 
     it("should send an error when one product isn't valid", () => {
@@ -90,6 +89,6 @@ describe("Submit cart to server", () => {
         ]))
 
         
-        return CartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
+        return cartSubmit.submit(submitForm).catch(error => expect(error).toEqual({error:"FORMAT_ERROR"}));
     });
 });

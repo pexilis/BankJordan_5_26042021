@@ -4,20 +4,18 @@ import "../loaders/global.loader.js";
 import PageConfig from "../config/view/biling.config.js";
 import PageGlobal from "../config/view/global.config.js";
 
-(() => {
-    const model = new LocalStorageAPI("command-storage");
-    CommandError.init(ConfigValidator);
-    Command.init(model, CommandError);
-    CommandCalculate.init(Command);
-    GenerateCommand.init(Command, CommandCalculate);
-})();
 
+const model = new LocalStorageAPI("command-storage");
+const commandError = new CommandError(ConfigValidator);
+const command = new Command(model, commandError);
+const commandCalculate = new CommandCalculate(command);
+const generateCommand = new GenerateCommand(command, commandCalculate);
 const id = PageConfig.data["id"];
 
 document.addEventListener("DOMContentLoaded", () => {
-    GenerateCommand.run(id).then(data => {
+    generateCommand.run(id).then(data => {
         PageConfig.drawInfo(id, data);
     }).catch(error => {
-        alert(error.error);
+        console.log(error);
     });
 });
