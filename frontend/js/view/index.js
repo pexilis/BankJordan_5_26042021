@@ -13,7 +13,6 @@ const loadPage = new LoadPage(product, cart, cartCalculate);
 const {templateCardElement, cardContainer} = PageConfig;
 const {place} = PageGlobal;
 
-
 document.addEventListener("DOMContentLoaded", () => {
     loadPage.header().then(data => {
         const {totalProducts} = data;

@@ -7,8 +7,6 @@ class SubmitCart {
 
    async run(opts) {
         const {CartSubmit, Cart, Command} = this;
-
-        console.log(CartSubmit, Cart, Command);
         let result = await CartSubmit.submit(opts);
         Command.add(result);
         Cart.clearCart();

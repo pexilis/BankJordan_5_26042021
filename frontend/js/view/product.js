@@ -74,8 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         changeQuantity.page({quantity:value,price}).then(data => {
             PageConfig.drawTotalPrice(data);
-        }).catch(error => {
-            console.log(error);
         })
     });
 

@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         PageConfig.drawTotal(totalPrice);
-    }).catch(error => console.log(error.error));
+    })
 
     cardContainer.onclick = e => {
         const target = e.target;

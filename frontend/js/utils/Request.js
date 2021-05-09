@@ -19,7 +19,6 @@ const genericSend = async(url, method, headers, body=undefined) => {
             });
             
     }catch(e){
-        console.log(e);
         throw {error:"NETWORK_ERROR"};
     }
 
@@ -56,9 +55,7 @@ class JSONUrlRequest extends UrlRequest{
         let response;
         let json;
         let url = urlParser(this.url, data);
-
-        console.log(url);
-
+        
         response = await genericSend(url, this.method, {
             "Accept":"application/json"
         }, data);
