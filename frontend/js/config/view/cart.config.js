@@ -30,6 +30,13 @@ const PageConfig = (() => {
         })
     }
 
+    self.hideForm = () => {
+        const {formElement, formButton, totalElement} = self;
+        formElement.style.display = "none";
+        formButton.style.display = "none";
+        totalElement.style.marginTop = "78px";
+    }
+
     self.generateCard = (data,template) => {
         const {name, calculatePrice, imageUrl, quantity, _id} = data;
         const temp = template;
