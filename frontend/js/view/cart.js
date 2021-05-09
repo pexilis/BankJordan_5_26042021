@@ -36,9 +36,14 @@ const handleClose = target => {
 
             PageGlobal.drawQuantities(quantity);
             PageConfig.drawTotal(totalPrice);
+            if (quantity === 0) {
+                PageConfig.hideForm();
+            }
 
         }).catch(error => {       
-            alert(error.error);
+            if (["INITIALIZATION_ERROR", "EMPTY_ERROR", "FORMAT_ERROR"]
+                .includes(error.error))
+                PageGlobal.showModal(PageGlobal.formatBadCart);
         });
 }
 
@@ -56,7 +61,8 @@ const handleChange = (target) => {
         PageConfig.drawQuantities(quantity);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        alert(error);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadQuantity);
     })
 }
 
@@ -68,12 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const {totalProducts} = data;
         PageConfig.drawQuantities(totalProducts);
     }).catch(error => {
-        console.log(error);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
     });
 
     loadPage.cart().then(data => {
         const {clientProducts, totalPrice} = data;
         
+        if (clientProducts.length === 0) {
+            PageConfig.hideForm();
+        }
+
         clientProducts.map((product,index) => {
             const card = PageConfig.generateCard(product, templateCard);
             const selectElement = card.querySelector("#quantity");
@@ -82,9 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         PageConfig.drawTotal(totalPrice);
-    }).catch(error => {
-        console.log(error);
-    });
+    }).catch(error => console.log(error.error));
 
     cardContainer.onclick = e => {
         const target = e.target;
@@ -123,7 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
             cardContainer.innerHTML = "";
             window.location.replace(`./biling.html?id=${orderId}`);
         }).catch(error => {
-            console.log(error);
+            if (["INITIALIZATION_ERROR"].includes(error.error))
+                PageGlobal.showModal(PageGlobal.formatBadCart);
+            if (error.error === "FORMAT_ERROR")
+                PageGlobal.showModal(PageGlobal.formatCartMessage);   
         })
     }
 });

@@ -18,13 +18,21 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPage.header().then(data => {
         const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
-    })
+    }).catch(error => {
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
+    });
 
     loadPage.index().then(data => {
         const {serverProducts} = data;
         PageConfig.drawCards(serverProducts, place);         
     })
     .catch(error => {
-        console.log(error);
+       if (error.error === "CLIENT_ERROR")
+            PageGlobal.showModal(PageGlobal.clientMessage);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatMessage);
+        if (error.error === "NETWORK_ERROR")
+            PageGlobal.showModal(PageGlobal.networkMessage);
     });
 });
