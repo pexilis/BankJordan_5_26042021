@@ -8,6 +8,7 @@
     }
 
     > div{
+        height:1370px;
         display: grid;
         grid-template-columns: 1fr;
         grid-auto-rows: 242px;
@@ -26,6 +27,7 @@
 @mixin l-presentation--tablet{
     .l-presentation{
         > div{
+            height:806px;
             grid-template-columns: repeat(2, 1fr);
             grid-column-gap:40px; 
         }
@@ -35,6 +37,7 @@
 @mixin l-presentation--laptop{
     .l-presentation{
         > div{
+            height:524px;
             grid-template-columns: repeat(3, 1fr);
             grid-column-gap:40px;   
         }
@@ -44,6 +47,7 @@
 @mixin l-presentation--computer{
     .l-presentation{
         > div{
+            height:524px;
             grid-template-columns: repeat(3, 1fr);
             grid-column-gap:40px;
         }

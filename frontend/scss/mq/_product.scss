@@ -1,5 +1,5 @@
 @media screen and (min-width:768px) and (max-width:1023px){
-    
+    @include l-product--tablet;
 }
 
 @media screen and (min-width:1024px) and (max-width:1439px) {
@@ -8,6 +8,6 @@
 }
 
 @media screen and (min-width:1440px) {
-    @include l-product--laptop;
+    @include l-product--computer;
     @include form--laptop;
 }
