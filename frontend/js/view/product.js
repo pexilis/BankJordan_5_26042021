@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPage.header().then(data => {
         const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
+    }).catch(error => {
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
     });
 
     loadPage.article(id).then(data => {
@@ -54,8 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
         PageConfig.drawInfos(selectedProduct);
     
     }).catch(error => {
-        console.log("LOL");
-        console.log(error);
+        if (error.error === "CLIENT_ERROR")
+            PageGlobal.showModal(PageGlobal.clientMessage);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatMessage);
+        if (error.error === "NETWORK_ERROR")
+            PageGlobal.showModal(PageGlobal.networkMessage);
     })
 
     selectQuantity.addEventListener("change", e => {
@@ -76,16 +83,16 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         const {quantity} = configProduct;
         configProduct.selectedProduct.quantity = quantity;
-        configProduct.quantity = 1;
-
+    
         addArticle.run(configProduct.selectedProduct).then(data => {
             const {totalProducts, maxQuantitySelected} = data;
-
+            configProduct.quantity = 1;
             PageConfig.drawQuantity(maxQuantitySelected);
             PageGlobal.drawQuantities(totalProducts);
             PageGlobal.startAnimation(1200, buttonLoader);
         }).catch(error => {
-            console.log(error);
+            if (error.error === "FORMAT_ERROR")
+                PageGlobal.showModal(PageGlobal.genericBadFormat);
         })
     });
 });
