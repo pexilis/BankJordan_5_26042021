@@ -8,19 +8,19 @@ import Cart from "../frontend/js/data/cart.js";
 import * as Utils from "./utils.js";
 
 const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
 
-CartError.init(ConfigValidator, cartModel);
-Cart.init(cartModel, RequestFactory, CartError);
 
 describe("See all articles", () => {
     it("should return every articles when all is ok", () => {
         expect.assertions(1);
         localStorage.setItem("cart-storage", "[]");
-        return Cart.listArticles().then(data => expect(typeof data === "object").toBe(true));
+        return cart.listArticles().then(data => expect(typeof data === "object").toBe(true));
     });
 
     it("should return an error if only one of the items is invalid", () => {
-        return Cart.listArticles().catch(e => expect(e).toEqual({error:"FORMAT_ERROR"}));        expect.assertions(1);
+        return cart.listArticles().catch(e => expect(e).toEqual({error:"FORMAT_ERROR"}));        expect.assertions(1);
         let arrItem = generateArrItem();
         arrItem[0].quantity = "1000";
 
@@ -36,7 +36,7 @@ describe("Add article to cart", () => {
             let dummyArticle = Utils.generateArticle();
             dummyArticle._id = "1234";
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
+            cart.addArticle(dummyArticle);
         }catch(error){
             thrownError = error;
         }
@@ -50,7 +50,7 @@ describe("Add article to cart", () => {
             let dummyArticle = Utils.generateArticle();
             dummyArticle.quantity = "-100";
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
+            cart.addArticle(dummyArticle);
         }catch(error){
             thrownError = error;
         }
@@ -64,7 +64,7 @@ describe("Add article to cart", () => {
             let dummyArticle = Utils.generateArticle();
             dummyArticle.quantity = "100";
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
+            cart.addArticle(dummyArticle);
         }catch(error){
             thrownError = error;
         }
@@ -78,7 +78,7 @@ describe("Add article to cart", () => {
             let dummyArticle = Utils.generateArticle();
             dummyArticle.price = "4555";
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
+            cart.addArticle(dummyArticle);
         }catch(error){
             thrownError = error;
         }
@@ -95,7 +95,7 @@ describe("Add article to cart", () => {
             }
             
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle(dummyArticle);
+            cart.addArticle(dummyArticle);
         }catch(error){
             thrownError = error;
         }
@@ -106,7 +106,7 @@ describe("Add article to cart", () => {
     it("should add article when article doesn't exist", () => {
         localStorage.setItem("cart-storage", "[]");
         let dummyArticle = Utils.generateArticle();
-        Cart.addArticle(dummyArticle);
+        cart.addArticle(dummyArticle);
 
         const arrArticle = JSON.parse(localStorage.getItem("cart-storage"));
         const article = arrArticle.find(article => article._id === dummyArticle._id);
@@ -119,8 +119,8 @@ describe("Add article to cart", () => {
          
         let dummyArticle = Utils.generateArticle();
 
-        Cart.addArticle(dummyArticle);
-        Cart.addArticle(dummyArticle);
+        cart.addArticle(dummyArticle);
+        cart.addArticle(dummyArticle);
 
         const arrArticle = JSON.parse(localStorage.getItem("cart-storage"));
         const article = arrArticle.find(article => article._id === dummyArticle._id);
@@ -136,7 +136,7 @@ describe("Add article to cart", () => {
             let dummyArticle = Utils.generateArticle();
 
             for (let i = 0 ; i < 55 ; i++) {
-                Cart.addArticle(dummyArticle);
+                cart.addArticle(dummyArticle);
             }
         }catch(e){
             thrownError = e;
@@ -204,22 +204,22 @@ describe("Add article to cart", () => {
         ];
 
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(firstArticle);
-        Cart.addArticle(firstArticle);
-        Cart.addArticle(secondArticle);
-        Cart.addArticle(secondArticle);
-        Cart.addArticle(thirdArticle);
-        Cart.addArticle(thirdArticle);
+        cart.addArticle(firstArticle);
+        cart.addArticle(firstArticle);
+        cart.addArticle(secondArticle);
+        cart.addArticle(secondArticle);
+        cart.addArticle(thirdArticle);
+        cart.addArticle(thirdArticle);
 
         
-        return Cart.listArticles().then(data => expect(data).toEqual(result));
+        return cart.listArticles().then(data => expect(data).toEqual(result));
     });
 
     it("should return added article", () => {
         localStorage.setItem("cart-storage", "[]");
         let article = Utils.generateArticle();
 
-        const result = Cart.addArticle(article);
+        const result = cart.addArticle(article);
 
         expect(result).toEqual(article);
     });
@@ -236,12 +236,12 @@ describe("Set article by id", () => {
         let error;
 
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(article);
+        cart.addArticle(article);
         
         article.price = "5600";
 
         try{
-            Cart.setArticleById("123", article);
+            cart.setArticleById("123", article);
         }catch(e){
             error = e;
         }
@@ -254,10 +254,10 @@ describe("Set article by id", () => {
         let error;
 
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(article);
+        cart.addArticle(article);
         article.price = "5600";
 
-        Cart.setArticleById(article._id, article);
+        cart.setArticleById(article._id, article);
     });
 
     it("should throw an error on invalid article", () => {
@@ -265,11 +265,11 @@ describe("Set article by id", () => {
         let error;
 
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(article);
+        cart.addArticle(article);
         article.price = "56";
 
         try{
-            Cart.setArticleById(article._id, article);
+            cart.setArticleById(article._id, article);
         }catch(e){
             error = e;
         }
@@ -284,10 +284,10 @@ describe("Get article by id", () => {
         const article = Utils.generateArticle();
         let error;
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(article);
+        cart.addArticle(article);
 
         try{
-            let article = Cart.getArticleById("123");
+            let article = cart.getArticleById("123");
         }catch(e){
             error = e;
         }
@@ -299,9 +299,9 @@ describe("Get article by id", () => {
         const article = Utils.generateArticle();
         let error;
         localStorage.setItem("cart-storage", "[]");
-        Cart.addArticle(article);
+        cart.addArticle(article);
         
-        expect(Cart.getArticleById(article._id)).toEqual(article);
+        expect(cart.getArticleById(article._id)).toEqual(article);
     });
 });
 
@@ -310,7 +310,7 @@ describe("Remove article controller", () => {
         let error;
         try{
             localStorage.setItem("cart-storage", "[]");
-            Cart.addArticle({
+            cart.addArticle({
                 name:"foo",
                 description:"my description",
                 _id:"5be1ed3f1c9d44000030b061", 
@@ -318,7 +318,7 @@ describe("Remove article controller", () => {
                 price:"455500",
                 imageUrl:"http://localhost:3000/images/vcam_1.jpg"
             });
-            Cart.removeArticle("123");
+            cart.removeArticle("123");
         }catch(e){
             error = e;
         }
@@ -330,8 +330,8 @@ describe("Remove article controller", () => {
         localStorage.setItem("cart-storage", "[]");
         let article = Utils.generateArticle();
 
-        Cart.addArticle(article);
-        const result = Cart.removeArticle(article._id);
+        cart.addArticle(article);
+        const result = cart.removeArticle(article._id);
 
         expect(result).toEqual(article);
     });
