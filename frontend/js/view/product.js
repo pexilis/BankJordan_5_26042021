@@ -4,79 +4,94 @@ import "../loaders/global.loader.js";
 import PageConfig from "../config/view/product.config.js";
 import PageGlobal from "../config/view/global.config.js";
 
-(() => {
-    const CartModel = new LocalStorageAPI("cart-storage");
-    PageConfig.init();
-    CartError.init(ConfigValidator, CartModel);
-    Cart.init(CartModel, RequestFactory, CartError);
-    Product.init(RequestFactory, ConfigValidator, CartError);
-    CartCalculate.init(Cart);
-    LoadPage.init(Product, Cart, CartCalculate);
-    AddArticle.init(Cart, CartCalculate);
-    ChangeQuantity.init(Cart, CartCalculate);
-})();
+PageConfig.init();
 
-document.addEventListener("DOMContentLoaded", () => {
-    let configProduct = PageConfig.data;
-    let {id} = configProduct;
+const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart);
 
-    let {
+const product = new Product(RequestFactory, ConfigValidator, cartError);
+const loadPage = new LoadPage(product, cart, cartCalculate);
+const addArticle = new AddArticle(cart, cartCalculate);
+const changeQuantity = new ChangeQuantity(cart, cartCalculate);
+
+let configProduct = PageConfig.data;
+let {id} = configProduct;
+
+let {
             selectQuantity, 
             productButton,                
             counterElement,
             buttonLoader,
             place,
             productContainer 
-        } = PageConfig;
+} = PageConfig;
 
-    LoadPage.run({id}).then(data => {
-        const {lenses, imageUrl:urlImg, name} = data.selectedProduct;
-        const {maxQuantitySelected:maxQuantity, totalProducts} = data;
-        const elementImage = PageConfig.generateImage(urlImg);
+document.addEventListener("DOMContentLoaded", () => {
+    loadPage.header().then(data => {
+        const {totalProducts} = data;
+        PageGlobal.drawQuantities(totalProducts);
+    }).catch(error => {
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
+    });
 
+    loadPage.article(id).then(data => {
+        const {
+               selectedProduct, 
+               maxQuantitySelected:maxQuantity,
+               totalProducts
+        } = data;
+        const {
+                lenses, 
+                imageUrl, 
+                name
+        } = selectedProduct;
+        
         configProduct.selectedProduct = data.selectedProduct;
-        productContainer.replaceChild(elementImage, place["image"]);
 
+        PageConfig.drawImage(imageUrl);
         PageConfig.drawQuantity(maxQuantity);
         PageConfig.drawLenses(lenses);
-        PageConfig.drawText(data.selectedProduct);
-        PageGlobal.drawQuantities(totalProducts);   
-
-        configProduct.quantity = selectQuantity.value;
+        PageConfig.drawInfos(selectedProduct);
+    
     }).catch(error => {
-        alert(error.error);
+        if (error.error === "CLIENT_ERROR")
+            PageGlobal.showModal(PageGlobal.clientMessage);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatMessage);
+        if (error.error === "NETWORK_ERROR")
+            PageGlobal.showModal(PageGlobal.networkMessage);
     })
 
     selectQuantity.addEventListener("change", e => {
-        const target = e.target;
-        const quantity = target.value;
-        const price = configProduct.selectedProduct.price;
+        const {target} = e;
+        const {value} = target;
+        const {price} = configProduct.selectedProduct;
     
-        configProduct.quantity = quantity;
+        configProduct.quantity = value;
 
-        ChangeQuantity.page({quantity,price}).then(data => {
+        changeQuantity.page({quantity:value,price}).then(data => {
             PageConfig.drawTotalPrice(data);
-        }).catch(error => {
-            alert(error.error);
         })
     });
 
     productButton.addEventListener("click", e => {
+        console.log("LOL");
         e.preventDefault();
-    
-        const quantity = configProduct.quantity;
+        const {quantity} = configProduct;
         configProduct.selectedProduct.quantity = quantity;
-        
-       
-            AddArticle.run(configProduct.selectedProduct).then(data => {
-                PageConfig.drawQuantity(data.maxQuantitySelected);
-                const totalProducts = data.totalProducts;
-                configProduct.quantity = 1;
-                PageGlobal.drawQuantities(totalProducts);
-
-                PageGlobal.startAnimation(800, buttonLoader);
-            }).catch(error => {
-                alert(error.error);
-            })
+    
+        addArticle.run(configProduct.selectedProduct).then(data => {
+            const {totalProducts, maxQuantitySelected} = data;
+            configProduct.quantity = 1;
+            PageConfig.drawQuantity(maxQuantitySelected);
+            PageGlobal.drawQuantities(totalProducts);
+            PageGlobal.startAnimation(1200, buttonLoader);
+        }).catch(error => {
+            if (error.error === "FORMAT_ERROR")
+                PageGlobal.showModal(PageGlobal.genericBadFormat);
+        })
     });
 });

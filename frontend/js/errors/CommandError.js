@@ -1,22 +1,17 @@
-const CommandError = (() => {
-    let self = {};
-    let Validator = null;
-
-    
-    self.init = validator => {
-        Validator = validator;
+class CommandError {
+    constructor(validator) {
+        this.Validator = validator;
     }
 
-    self.errorUUID = id => {
+    errorUUID(id) {
+        const {Validator} = this;
         const result = Validator.checkRegex({
             "orderId":id
         });
 
         if (!result.valid)
-            throw {error:"ERROR_FORMAT"};
-    }
-
-    return self;
-})();
+            throw {error:"FORMAT_ERROR"};
+    } 
+}
 
 export default CommandError;

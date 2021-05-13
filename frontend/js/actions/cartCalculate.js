@@ -1,48 +1,67 @@
-const CartCalculate = (() => {
-    let self = {};
-    let Cart = null;
 
-    self.init = cart => {
-        Cart = cart;
+/**
+ * @author Bank Jordan <jordan.developper@outlook.com>
+ * @description Class to manage relative to Cart operation
+ */
+
+ import "../typedef/typedefs.js";
+
+class CartCalculate {
+    /**
+     * Create a CartCalculate
+     * @param {Cart} cart - Cart dependancy
+     */
+    constructor(cart) {
+        this.Cart = cart;
     }
 
-    self.totalPrices = _ => {
+    /**
+     * Calculate total Prices
+     * @return {Number[]}
+     */
+
+    totalPrices() {
+        const {Cart} = this;
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
-        const paidPrices = [];
-
-        arrArticle.map(article => {
-            CartError.errorFormat(article);
-            const paidPrice = Number.parseInt(article.calculatePrice, 10);
-            paidPrices.push(paidPrice);
-        });
+        let paidPrices = [];
 
         if (arrArticle.length === 0)
             return 0;
+            
+        paidPrices = arrArticle.map(article => {
+            CartError.errorFormat(article);
+            const paidPrice = Number.parseInt(article.calculatePrice, 10);
+            return paidPrice;
+        });
 
         return paidPrices.reduce((old, next) => old + next);
     }
 
-    self.quantities = _ => {
+    /**
+     * Calculate quantites
+     * @return {Number[]}
+     */
+
+    quantities (){
+        const {Cart} = this;
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
-        const quantities = [];
+        let quantities = [];
 
         if (arrArticle.length === 0)
             return 0;
 
-        arrArticle.map(article => {
+        quantities = arrArticle.map(article => {
             CartError.errorFormat(article);
             const quantity = Number.parseInt(article.quantity);
-            quantities.push(quantity);
+            return quantity;
         });
 
         return quantities.reduce((old, curr) => old + curr);
     }
-
-    return self;
-})();
+}
 
 export default CartCalculate;

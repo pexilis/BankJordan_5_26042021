@@ -4,6 +4,7 @@ const {merge} = require("webpack-merge");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlCriticalWebpackPlugin = require("html-critical-webpack-plugin");
+const webpack = require("webpack")
 
 const HtmlCritical = (page,width,height) => {
     return new HtmlCriticalWebpackPlugin({
@@ -24,6 +25,11 @@ module.exports = merge(common, {
         new MiniCssExtractPlugin({
             filename: "src/css/[name].[fullhash].min.css",
         }),
+        new webpack.EnvironmentPlugin({
+            HOSTNAME:'orinoco-back.herokuapp.com',
+            PROTOCOL:'https',
+            MAX_QUANTITY:10,
+        }), 
         HtmlCritical("index.html", 375, 625),
         HtmlCritical("cart.html", 375, 625),
         HtmlCritical("product.html", 375, 625),

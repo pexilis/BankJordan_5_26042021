@@ -1,17 +1,14 @@
-const AddArticle = (() => {
-    let self = {};
-    let Cart = null;
-    let CartCalculate = null;
-
-    self.init = (cart, calcul) => {
-        Cart = cart;
-        CartCalculate = calcul;
+class AddArticle {
+    constructor(cart, calcul) {
+        this.Cart = cart; 
+        this.CartCalculate = calcul;
     }
 
-    self.run = async(article) => {
+    async run(article) {
+        const {Cart, CartCalculate} = this;
         const addedArticle = Cart.addArticle(article);
         const minQuantitySelected = 1;
-        const maxQuantitySelected = 99 - addedArticle.quantity;
+        const maxQuantitySelected = process.env.MAX_QUANTITY - addedArticle.quantity;
         const totalProducts = CartCalculate.quantities();
 
         return {
@@ -21,8 +18,6 @@ const AddArticle = (() => {
             totalProducts
         }
     }
-
-    return self;
-})();
+}
 
 export default AddArticle;

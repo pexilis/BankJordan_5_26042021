@@ -1,16 +1,12 @@
-const SubmitCart = (() => {
-    let self = {};
-    let Cart = null;
-    let CartSubmit = null;
-    let Command = null;
-    
-    self.init = (cart, submit, command) => {
-        Cart = cart;
-        CartSubmit = submit;
-        Command = command;
+class SubmitCart {
+    constructor(cart, submit, command) {
+        this.Cart = cart;
+        this.CartSubmit = submit;
+        this.Command = command;
     }
 
-    self.run = async(opts) => {
+   async run(opts) {
+        const {CartSubmit, Cart, Command} = this;
         let result = await CartSubmit.submit(opts);
         Command.add(result);
         Cart.clearCart();
@@ -19,8 +15,6 @@ const SubmitCart = (() => {
             result
         }
     }
-
-    return self;
-})();
+}
 
 export default SubmitCart;

@@ -1,32 +1,47 @@
-const Product = (() => {
-    let self = {};
-    let RequestFactory = null; 
-    let Validator = null;
-    let CartError = null;
+/**
+ * @author Bank Jordan <jordan.developper@outlook.com>
+ * @description Class to manage relative to Product access data with user input validation
+ */
 
-
-    self.init = (request, validator, error) => {
-        RequestFactory = request;
-        Validator = validator;
-        CartError = error;
+import "../typedef/typedefs.js";
+class Product {
+    /**
+     * Create a Command.
+     * @param {request} RequestFactory - RequestFactory dependency
+     * @param {validator} Validator - Validator dependancy
+     * @param {error} CartError - Validator dependancy
+     */
+    constructor(request, validator, error) {
+        this.RequestFactory = request;
+        this.Validator = validator;
+        this.CartError = error;
     }
 
-    self.fetchEvery = async() => {
+    /**
+     * Get Every Command from backend
+     * @return {Command[]}
+     */
+
+    async fetchEvery() {
+        const {RequestFactory} = this;
         let request = RequestFactory.get("getProducts");
-        let jsonResponse = request.send();
+        let jsonResponse = await request.send();
         return jsonResponse;
     }
 
-    self.fetchById = async(id) => {
+    /**
+     * Get Command by Id from backend
+     * @return {Command[]}
+     * @param {String} id - Id of product
+     */
+    
+    async fetchById(id) {
+        const {CartError} = this;
         CartError.errorID(id);
         let request = RequestFactory.get("getProductById");
-        let jsonResponse = request.send({id});
-
-        jsonResponse.price = jsonResponse.price.toString();
+        let jsonResponse = await request.send({id});
         return jsonResponse;
     }
-
-    return self;
-})();
+}
 
 export default Product;

@@ -1,14 +1,12 @@
-const CartError = (() => {
-    let self = {};
-    let Validator = null;
-    let CartModel = null;
-
-    self.init = (validator, model) => {
-        Validator = validator;
-        CartModel = model;
+class CartError{
+    constructor(validator, model) {
+        this.Validator = validator;
+        this.CartModel = model;
     }
 
-    self.errorFormat = article => {
+    errorFormat(article) {
+        const {Validator} = this;
+
         const objCheck = Validator.checkRegex({
             "uuid":article._id,
             "quantity":article.quantity,
@@ -19,7 +17,9 @@ const CartError = (() => {
             throw {error:"FORMAT_ERROR"};
     }
 
-    self.errorSubmit = submitForm => {
+    errorSubmit(submitForm) {
+        const {Validator} = this;
+
         const checkObj = Validator.checkRegex({
             "name":[submitForm.firstName, submitForm.lastName],
             "city":submitForm.city,
@@ -31,26 +31,24 @@ const CartError = (() => {
             throw {error:"FORMAT_ERROR"};
     }
     
-    self.errorProducts = _ => {
+    errorProducts() {
+        const {CartModel, Validator} = this;
         const articles = CartModel.getArray();
-        
+
         for (let i = 0 ; i < articles.length ; i++) {
             const uuid = articles[i]._id;
             const result = Validator.checkRegex({"uuid":uuid});
-            if (!result.valid){
-                throw {error:"FORMAT_ERROR"};
-            }
+            if (!result.valid) throw {error:"FORMAT_ERROR"};
         }
     }
 
-    self.errorID = id => {
+    errorID(id) {
+        const {Validator} = this;
         if (Validator.checkRegex({
             "uuid":id
         }).valid === false)
             throw {error:"FORMAT_ERROR"};
     }
-
-    return self;
-})();
+}
 
 export default CartError;

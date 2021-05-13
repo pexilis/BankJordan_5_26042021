@@ -1,7 +1,7 @@
 const path = require("path");
 var common = require("./webpack.common");
 const {merge} = require("webpack-merge");
-
+const webpack = require("webpack");
 
 module.exports = merge(common, {
     mode:"development",
@@ -10,6 +10,14 @@ module.exports = merge(common, {
         filename:"[name].js",
         path: path.resolve(__dirname, "dist"),
     },
+
+    plugins:[
+        new webpack.EnvironmentPlugin({
+            HOSTNAME:'127.0.0.1:3000',
+            PROTOCOL:'http',
+            MAX_QUANTITY:99,
+        })  
+    ],
 
     module:{
         rules:[

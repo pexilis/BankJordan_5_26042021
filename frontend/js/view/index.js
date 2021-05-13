@@ -4,31 +4,34 @@ import "../loaders/global.loader.js";
 import PageConfig from "../config/view/index.config.js";
 import PageGlobal from "../config/view/global.config.js";
 
-(() => {
-       const CartModel = new LocalStorageAPI("cart-storage");
-       CartError.init(ConfigValidator, CartModel);
-       Cart.init(CartModel, RequestFactory, CartError);
-       Product.init(RequestFactory, ConfigValidator, CartError);
-       CartCalculate.init(Cart);
-       LoadPage.init(Product, Cart, CartCalculate);
-})();
+const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart, cartError);
+const product = new Product(RequestFactory, ConfigValidator, cartError);
+const loadPage = new LoadPage(product, cart, cartCalculate);
+const {templateCardElement, cardContainer} = PageConfig;
+const {place} = PageGlobal;
 
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.run()
-    .then(data => {
-        const {serverProducts, totalProducts} = data;
-        const {templateCardElement, cardContainer} = PageConfig;
-        const places = PageGlobal.place;
-
-        serverProducts.forEach((element, index) => {
-            const card = PageConfig.generateCard(element, index, templateCardElement);
-            cardContainer.replaceChild(card, places[index]);
-        })
-
+    loadPage.header().then(data => {
+        const {totalProducts} = data;
         PageGlobal.drawQuantities(totalProducts);
-    })
-    .catch(error => {
-        alert(error.error);
+    }).catch(error => {
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
     });
 
+    loadPage.index().then(data => {
+        const {serverProducts} = data;
+        PageConfig.drawCards(serverProducts, place);         
+    })
+    .catch(error => {
+       if (error.error === "CLIENT_ERROR")
+            PageGlobal.showModal(PageGlobal.clientMessage);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatMessage);
+        if (error.error === "NETWORK_ERROR")
+            PageGlobal.showModal(PageGlobal.networkMessage);
+    });
 });

@@ -22,16 +22,6 @@ const pageConfig = (() => {
         self.data["id"] = id;
     }
 
-    self.toggleLoader = () => {
-        const buttonLoader = self.buttonLoader;
-
-        if (buttonLoader.classList.contains("active")){
-            buttonLoader.classList.remove("active");
-        }else{
-            buttonLoader.classList.add("active");
-        }
-    }
-
     self.drawQuantity = max => {
         let selectQuantity = self.selectQuantity;
         selectQuantity.innerHTML = "";
@@ -67,7 +57,7 @@ const pageConfig = (() => {
         return imgElement;
     }
 
-    self.drawText = data => {
+    self.drawInfos = data => {
         let nameProduct = self.nameProduct;
         let priceProduct = self.priceProduct;
         let descriptionProduct = self.descriptionProduct;
@@ -92,7 +82,17 @@ const pageConfig = (() => {
         totalPriceElement.textContent = priceStr;
     }
 
+    self.drawImage = (imageUrl) => {
+        const {productContainer, place} = self;
+        const elementImage = self.generateImage(imageUrl);
+        productContainer.replaceChild(elementImage, place["image"]);
+    }
+
     return self;
+})();
+
+(() => {
+    pageConfig.data.quantity = 1;
 })();
 
 export default pageConfig;

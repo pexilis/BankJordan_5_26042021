@@ -10,26 +10,33 @@ const PageConfig = (() => {
     self.counterElement = document.querySelector(".l-header__counter");
     self.buttonLoader = document.querySelector(".btn__loader");
 
+    // Generator 
 
-    const handleChange = target => {
+    const handleChange = (target) => {
         const currentCard = DOMApi.findParentNode(target, "card--cart");
         const selectElement = currentCard.querySelector("select");
     
         const id = currentCard.getAttribute("data-id");
         const quantity = selectElement.value;
     
-        ChangeQuantity.cart({id, quantity}).then(data => {
+        changeQuantity.cart({id, quantity}).then(data => {
             const {updatedPrice, totalPrice, quantity} = data;
     
-            self.drawPrice(currentCard, updatedPrice);
-            self.drawQuantities(quantity);
-            self.drawTotal(totalPrice);
+            PageConfig.drawPrice(currentCard, updatedPrice);
+            PageConfig.drawQuantities(quantity);
+            PageConfig.drawTotal(totalPrice);
         }).catch(error => {
-            alert(error.error);
+            alert(error);
         })
     }
 
-    // Generator 
+    self.hideForm = () => {
+        const {formElement, formButton, totalElement} = self;
+        formElement.style.display = "none";
+        formButton.style.display = "none";
+        totalElement.style.marginTop = "78px";
+    }
+
     self.generateCard = (data,template) => {
         const {name, calculatePrice, imageUrl, quantity, _id} = data;
         const temp = template;
@@ -46,7 +53,7 @@ const PageConfig = (() => {
         titleElement.textContent = name;
         priceElement.textContent = `${calculatePrice}€`;
         
-        for (let i = 1 ; i <= 99 ; i++) {
+        for (let i = 1 ; i <= process.env.MAX_QUANTITY ; i++) {
             const optElement = document.createElement("option");
             optElement.setAttribute("value", i);
             optElement.textContent = i;
@@ -54,7 +61,7 @@ const PageConfig = (() => {
         }
 
         selectElement.value = quantity;
-        selectElement.onchange = e => handleChange(e.target);
+        
         return cloned;
     }
 

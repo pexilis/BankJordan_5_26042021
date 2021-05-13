@@ -1,8 +1,13 @@
-class localStorageAPI {
+class ErrorStorage {
     constructor(name) {
         this.name = name;
     }
 
+    errorUndefined(command) {
+        if (command === undefined)
+            throw {error:"UNDEFINED_ERROR"};
+    }
+    
     errorInit() {
         const isInit =  !this.isInitialized();
         if (isInit) throw {error:"INITIALIZATION_ERROR"};
@@ -21,7 +26,9 @@ class localStorageAPI {
         
         if (notExist) throw {error:"ACCESS_ERROR"};
     }
+}
 
+class localStorageAPI extends ErrorStorage{
     isInitialized() {
         return localStorage.getItem(this.name) !== null;
     }
@@ -49,7 +56,7 @@ class localStorageAPI {
         return item;
     }
 
-    addItem(item) {
+    addItem(item) {        
         const arrArticle = this.getArray(this.name);
         arrArticle.push(item);
         localStorage.setItem(this.name, JSON.stringify(arrArticle));

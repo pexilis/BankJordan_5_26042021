@@ -1,17 +1,14 @@
-const ChangeQuantity = (() => {
-    let self = {};
-    let Cart = null;
-    let CartCalculate = null;
-    
-    self.init = (cart, calcul) => {
-        Cart = cart;
-        CartCalculate = calcul;
+class ChangeQuantity {
+    constructor(cart, calcul) {
+        this.Cart = cart;
+        this.CartCalculate = calcul;
     }
 
-    self.cart = async(opts) => {
-       if ([opts.id, opts.quantity].includes(undefined))
+    async cart(opts) {
+        const {Cart, CartCalculate} = this;
+        if ([opts.id, opts.quantity].includes(undefined))
             throw new {error:"UNDEFINED_ERROR"};
-        
+    
         const id = opts.id; 
         let quantity = opts.quantity;
         const articleToSet = Cart.getArticleById(id);
@@ -20,7 +17,7 @@ const ChangeQuantity = (() => {
             return {
                 articleModified:undefined,
             }
-        
+    
         articleToSet.quantity = quantity;
         Cart.setArticleById(id, articleToSet);
         const totalPrice = CartCalculate.totalPrices();
@@ -33,18 +30,16 @@ const ChangeQuantity = (() => {
         }
     }
 
-    self.page = async(opts) => {
+    async page(opts) {
         if ([opts.price, opts.quantity].includes(undefined))
             throw new {error:"UNDEFINED_ERROR"};
 
+        
         let quantity = Number.parseInt(opts.quantity);
-
-
         let price = Number.parseInt(opts.price.slice(0, opts.price.length - 2));
+
         return price * quantity;
     }
-
-    return self;
-})();
+}
 
 export default ChangeQuantity;

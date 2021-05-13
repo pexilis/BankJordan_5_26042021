@@ -4,28 +4,30 @@ import "../loaders/global.loader.js";
 import PageConfig from "../config/view/cart.config.js";
 import PageGlobal from "../config/view/global.config.js";
 
-(() => {
-    const CartModel = new LocalStorageAPI("cart-storage");
-    const CommandModel = new LocalStorageAPI("command-storage");
-    CartError.init(ConfigValidator, CartModel);
-    Cart.init(CartModel, RequestFactory, CartError);
-    CartCalculate.init(Cart);
-    CartSubmit.init(Cart);
-    Product.init(RequestFactory, ConfigValidator, CartError);
-    CommandError.init(ConfigValidator);
-    Command.init(CommandModel, CommandError);
-    LoadPage.init(Product, Cart, CartCalculate);
-    ChangeQuantity.init(Cart, CartCalculate);
-    LoadPage.init(Product, Cart, CartCalculate);
-    DeleteArticle.init(Cart, CartCalculate);
-    SubmitCart.init(Cart, CartSubmit, Command);
-})();
+
+const cartModel = new LocalStorageAPI("cart-storage");
+const cartError = new CartError(ConfigValidator, cartModel);
+const cart = new Cart(cartModel, RequestFactory, cartError);
+const cartCalculate = new CartCalculate(cart);
+const cartSubmit = new CartSubmit(cart);
+
+const commandModel = new LocalStorageAPI("command-storage");
+const commandError = new CommandError(ConfigValidator);
+const command = new Command(commandModel, commandError);
+
+const product = new Product(RequestFactory, ConfigValidator, cartError);
+
+const changeQuantity = new ChangeQuantity(cart, cartCalculate);
+const loadPage = new LoadPage(product, cart, cartCalculate);
+const deleteArticle = new DeleteArticle(cart, cartCalculate);
+const submitCart = new SubmitCart(cart, cartSubmit, command);
+
 
 const handleClose = target => {
     const currentCard = DOMApi.findParentNode(target, "card--cart");
-        const id = currentCard.getAttribute("data-id");
+    const id = currentCard.getAttribute("data-id");
 
-        DeleteArticle.run(id).then(data => {
+        deleteArticle.run(id).then(data => {
             const places = PageGlobal.place;
             const {article, totalPrice, quantity} = data;
             cardContainer.replaceChild(places[0], currentCard);
@@ -34,47 +36,64 @@ const handleClose = target => {
 
             PageGlobal.drawQuantities(quantity);
             PageConfig.drawTotal(totalPrice);
+            if (quantity === 0) {
+                PageConfig.hideForm();
+            }
 
         }).catch(error => {       
-            alert(error.error);
+            if (["INITIALIZATION_ERROR", "EMPTY_ERROR", "FORMAT_ERROR"]
+                .includes(error.error))
+                PageGlobal.showModal(PageGlobal.formatBadCart);
         });
 }
 
-const handleChange = target => {
+const handleChange = (target) => {
     const currentCard = DOMApi.findParentNode(target, "card--cart");
     const selectElement = currentCard.querySelector("select");
 
     const id = currentCard.getAttribute("data-id");
     const quantity = selectElement.value;
 
-    ChangeQuantity.cart({id, quantity}).then(data => {
+    changeQuantity.cart({id, quantity}).then(data => {
         const {updatedPrice, totalPrice, quantity} = data;
 
         PageConfig.drawPrice(currentCard, updatedPrice);
-        PageGlobal.drawQuantities(quantity);
+        PageConfig.drawQuantities(quantity);
         PageConfig.drawTotal(totalPrice);
     }).catch(error => {
-        alert(error.error);
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadQuantity);
     })
 }
 
 const {cardContainer, formButton, totalElement, templateCard, formElement} = PageConfig;
+const {place:places} = PageGlobal;
 
 document.addEventListener("DOMContentLoaded", () => {
-    LoadPage.run().then(data => {
-        const {clientProducts, totalProducts, totalPrice} = data;
-        const places = PageGlobal.place;
+    loadPage.header().then(data => {
+        const {totalProducts} = data;
+        PageConfig.drawQuantities(totalProducts);
+    }).catch(error => {
+        if (error.error === "FORMAT_ERROR")
+            PageGlobal.showModal(PageGlobal.formatBadCart);
+    });
+
+    loadPage.cart().then(data => {
+        const {clientProducts, totalPrice} = data;
+        
+        if (clientProducts.length === 0) {
+            PageConfig.hideForm();
+        }
 
         clientProducts.map((product,index) => {
             const card = PageConfig.generateCard(product, templateCard);
+            const selectElement = card.querySelector("#quantity");
+            selectElement.onchange = e => handleChange(e.target);
             cardContainer.replaceChild(card, places[index]);
         });
 
-        PageGlobal.drawQuantities(totalProducts);
         PageConfig.drawTotal(totalPrice);
-    }).catch(error => {
-        alert(error.error);
-    });
+    })
 
     cardContainer.onclick = e => {
         const target = e.target;
@@ -106,14 +125,17 @@ document.addEventListener("DOMContentLoaded", () => {
             ]
         );
 
-        SubmitCart.run(opts).then(data => {
+        submitCart.run(opts).then(data => {
             const {orderId} = data.result;
             PageGlobal.drawQuantities(0);
             PageConfig.drawTotal(0);
             cardContainer.innerHTML = "";
             window.location.replace(`./biling.html?id=${orderId}`);
         }).catch(error => {
-            alert(error.error);
+            if (["INITIALIZATION_ERROR"].includes(error.error))
+                PageGlobal.showModal(PageGlobal.formatBadCart);
+            if (error.error === "FORMAT_ERROR")
+                PageGlobal.showModal(PageGlobal.formatCartMessage);   
         })
     }
 });

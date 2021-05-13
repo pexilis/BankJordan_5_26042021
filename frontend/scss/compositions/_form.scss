@@ -24,6 +24,7 @@
         span{
             @include fluid-type(320px, 1440px, 20px, 28px);
             width:78px;
+            text-align:right;
         }
     }
 
@@ -60,6 +61,7 @@
             height:47px;
             border-bottom:1px solid #707070;
             padding:10px;
+            background-color: transparent;
         }
     }
 
