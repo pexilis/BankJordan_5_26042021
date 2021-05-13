@@ -53,7 +53,7 @@ const PageConfig = (() => {
         titleElement.textContent = name;
         priceElement.textContent = `${calculatePrice}€`;
         
-        for (let i = 1 ; i <= 99 ; i++) {
+        for (let i = 1 ; i <= process.env.MAX_QUANTITY ; i++) {
             const optElement = document.createElement("option");
             optElement.setAttribute("value", i);
             optElement.textContent = i;
