@@ -25,7 +25,7 @@ class CartCalculate {
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
-        const paidPrices = [];
+        let paidPrices = [];
 
         if (arrArticle.length === 0)
             return 0;
@@ -49,12 +49,12 @@ class CartCalculate {
         const {CartModel, CartError} = Cart.getEveryDependencies();
 
         const arrArticle = CartModel.getArray();
-        const quantities = [];
+        let quantities = [];
 
         if (arrArticle.length === 0)
             return 0;
 
-        quantites = arrArticle.map(article => {
+        quantities = arrArticle.map(article => {
             CartError.errorFormat(article);
             const quantity = Number.parseInt(article.quantity);
             return quantity;

@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     productButton.addEventListener("click", e => {
+        console.log("LOL");
         e.preventDefault();
         const {quantity} = configProduct;
         configProduct.selectedProduct.quantity = quantity;
