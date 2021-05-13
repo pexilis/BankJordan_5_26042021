@@ -9,6 +9,7 @@ class CartSubmit {
 
         CartError.errorSubmit(submitForm);
         CartError.errorProducts();
+        CartModel.errorEmpty();
         
         const products = await Cart.getEveryProductsId();
         let request = RequestFactory.get("submitCart");

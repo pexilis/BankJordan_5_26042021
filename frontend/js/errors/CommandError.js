@@ -10,8 +10,8 @@ class CommandError {
         });
 
         if (!result.valid)
-            throw {error:"ERROR_FORMAT"};
-    }
+            throw {error:"FORMAT_ERROR"};
+    } 
 }
 
 export default CommandError;

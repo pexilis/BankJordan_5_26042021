@@ -4,7 +4,7 @@ const Global = (() => {
     self.protocol = process.env.PROTOCOL;
     self.hostname = process.env.HOSTNAME;
     self.typeData = "cameras";
-    self.maxQuantityCart = 99;
+    self.maxQuantityCart = process.env.MAX_QUANTITY;
 
     return self;
 })();

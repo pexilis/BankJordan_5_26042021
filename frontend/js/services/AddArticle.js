@@ -8,7 +8,7 @@ class AddArticle {
         const {Cart, CartCalculate} = this;
         const addedArticle = Cart.addArticle(article);
         const minQuantitySelected = 1;
-        const maxQuantitySelected = 99 - addedArticle.quantity;
+        const maxQuantitySelected = process.env.MAX_QUANTITY - addedArticle.quantity;
         const totalProducts = CartCalculate.quantities();
 
         return {

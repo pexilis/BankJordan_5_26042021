@@ -20,7 +20,7 @@ const JSONManip = (() => {
         try{
             json = await response.json();
         }catch(e){
-            throw {error:"ERROR_JSON"}
+            throw {error:"JSON_ERROR"}
         }
 
         self.stringifyJSON(json);

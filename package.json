@@ -6,8 +6,9 @@
   "scripts": {
     "webpack-server": "webpack serve --config webpack.dev.js --open",
     "build": "webpack --config webpack.prod.js",
+    "doc":"jsdoc -c jsdoc.json",
     "server": "node server",
-    "test-watch": "jest --watch --all --coverage",
+    "tdd-watch": "jest --watch --all --coverage",
     "sass-watch": "sass --watch frontend/scss:frontend/css"
   },
   "author": "",

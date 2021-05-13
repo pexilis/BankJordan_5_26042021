@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     generateCommand.run(id).then(data => {
         PageConfig.drawInfo(id, data);
     }).catch(error => {
-         if (error.error === "ERROR_FORMAT")
+         if (error.error === "FORMAT_ERROR")
             PageGlobal.showModal(PageGlobal.formatMessage);
     });
 });
