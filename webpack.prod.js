@@ -27,7 +27,8 @@ module.exports = merge(common, {
         }),
         new webpack.EnvironmentPlugin({
             HOSTNAME:'orinoco-back.herokuapp.com',
-            PROTOCOL:'https'
+            PROTOCOL:'https',
+            MAX_QUANTITY:10,
         }), 
         HtmlCritical("index.html", 375, 625),
         HtmlCritical("cart.html", 375, 625),

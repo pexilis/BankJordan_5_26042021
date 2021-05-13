@@ -15,6 +15,7 @@ module.exports = merge(common, {
         new webpack.EnvironmentPlugin({
             HOSTNAME:'127.0.0.1:3000',
             PROTOCOL:'http',
+            MAX_QUANTITY:99,
         })  
     ],
 
