@@ -34,6 +34,7 @@ class ChangeQuantity {
         if ([opts.price, opts.quantity].includes(undefined))
             throw new {error:"UNDEFINED_ERROR"};
 
+        
         let quantity = Number.parseInt(opts.quantity);
         let price = Number.parseInt(opts.price.slice(0, opts.price.length - 2));
 

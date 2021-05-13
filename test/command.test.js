@@ -34,18 +34,6 @@ let command = {
 }
 
 describe("Add new command", () => {
-    it("should throw an error on undefined command", () => {
-        let error;
-
-        try{
-            commandData.add(undefined);
-        }catch(e){
-            error = e;
-        }
-
-        expect(error).toEqual({error:"UNDEFINED_ERROR"});
-    });
-
     it("should add the new command to local storage", () => {
         commandData.add(command);
 
@@ -66,7 +54,7 @@ describe("Get Command By Id", () => {
             error = e;
         }
 
-        expect(error).toEqual({error:"ERROR_FORMAT"});
+        expect(error).toEqual({error:"FORMAT_ERROR"});
     });
 
     it("should return the command by id", () => {
